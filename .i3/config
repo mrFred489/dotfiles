@@ -11,6 +11,7 @@
 
 set $mod Mod4
 set $mod2 Mod1+Mod4
+set $mod3 Mod3
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -19,13 +20,13 @@ set $mod2 Mod1+Mod4
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:System San Fransisco Display 9
+font pango:System San Fransisco Display 9, FontAwesome 8
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec xfce4-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -33,19 +34,18 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+F4 exec xkill
 
 # start dmenu (a program launcher)
-bindsym $mod+space exec dmenu_run
+#bindsym $mod+space exec dmenu_run
+bindsym $mod2+space exec i3-dmenu-desktop
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-
+bindsym $mod+space exec dmenu_run
 # Move the focus:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
-bindsym Mod1+Tab focus right
-bindsym Mod1+Shift+Tab focus left
 
 # move focused window
 bindsym $mod+Shift+Left move left
@@ -79,19 +79,27 @@ bindsym $mod+Shift+space floating toggle
 #bindsym $mod+d focus child
 
 # default container layout
-workspace_layout tabbed
+workspace_layout default
 
 # set workspace names
 set $workmain1 "1.1"
 set $workmain2 "2.1"
-set $workmain3 "3.1: "
+set $workmain3 "3.1"
 set $workmain4 "4.1"
 set $workmain5 "5.1"
-set $workleft1 "1.2: "
-set $workleft2 "2.2: "
+set $mail ""
+set $workleft1 "1.2: "
+set $workleft2 "2.2"
 set $workleft3 "3.2"
 set $workleft4 "4.2"
 set $workleft5 "5.2"
+set $music ""
+set $settings ""
+set $steam ""
+set $games ""
+set $streams ""
+set $communicate ""
+
 
 # Create named workspaces
 workspace $workmain1 output DVI-D-0
@@ -99,11 +107,17 @@ workspace $workmain2 output DVI-D-0
 workspace $workmain3 output DVI-D-0
 workspace $workmain4 output DVI-D-0
 workspace $workmain5 output DVI-D-0
+workspace $games output DVI-D-0
+workspace $mail output DVI-D-0
+workspace $steam output DVI-D-0
 workspace $workleft1 output DVI-I-0
 workspace $workleft2 output DVI-I-0
 workspace $workleft3 output DVI-I-0
 workspace $workleft4 output DVI-I-0
 workspace $workleft5 output DVI-I-0
+workspace $music output DVI-I-0
+workspace $settings output DVI-I-0
+workspace $communicate output DVI-I-0
 
 # switch to workspace
 bindsym $mod+1 workspace $workmain1
@@ -111,11 +125,18 @@ bindsym $mod+2 workspace $workmain2
 bindsym $mod+3 workspace $workmain3
 bindsym $mod+4 workspace $workmain4
 bindsym $mod+5 workspace $workmain5
+bindsym $mod+g workspace $games
+bindsym $mod+m workspace $mail
+bindsym $mod+s workspace $steam
 bindsym $mod2+1 workspace $workleft1
 bindsym $mod2+2 workspace $workleft2
 bindsym $mod2+3 workspace $workleft3
 bindsym $mod2+4 workspace $workleft4
 bindsym $mod2+5 workspace $workleft5
+bindsym $mod2+m workspace $music
+bindsym $mod2+s workspace $settings
+bindsym $mod2+v workspace $streams
+bindsym $mod2+c workspace $communicate
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workmain1
@@ -123,16 +144,51 @@ bindsym $mod+Shift+2 move container to workspace $workmain2
 bindsym $mod+Shift+3 move container to workspace $workmain3
 bindsym $mod+Shift+4 move container to workspace $workmain4
 bindsym $mod+Shift+5 move container to workspace $workmain5
+bindsym $mod+Shift+m move container to workspace $mail
+bindsym $mod+Shift+s move container to workspace $steam
+bindsym $mod+Shift+g move container to workspace $games
 bindsym $mod2+Shift+1 move container to workspace $workleft1
 bindsym $mod2+Shift+2 move container to workspace $workleft2
 bindsym $mod2+Shift+3 move container to workspace $workleft3
 bindsym $mod2+Shift+4 move container to workspace $workleft4
 bindsym $mod2+Shift+5 move container to workspace $workleft5
+bindsym $mod2+Shift+m move container to workspace $music
+bindsym $mod2+Shift+s move container to workspace $settings
+bindsym $mod2+Shift+v move container to workspace $streams
+bindsym $mod2+Shift+c move container to workspace $communicate
 
 # Dedicate windows to workspaces
-assign [class="Steam"] $workmain3
-assign [class="Gnome-system-monitor"] $workleft4
-assign [class="Gnome-control-center.real"] $workleft4
+# Use xprop to get information	
+
+assign [class="Steam"] $steam
+assign [title="Steam"] $steam
+assign [instance="Steam"] $steam
+assign [class="hl2_linux"] $games 
+assign [class="csgo_linux"] $games
+assign [class="starbound"] $games
+assign [class="net-minecraft-bootstrap-Bootstrap"] $games
+assign [class="Minecraft"] $games
+assign [class="Binding of Isaac"] $games
+assign [class="Kingdom Rush"] $games
+# assign [class="RocketLeague"] $games
+assign [class="Gnome-system-monitor"] $settings
+assign [class="Unity-control-center"] $settings
+assign [class="Pavucontrol"] $settings
+assign [class="Rhythmbox"] $workleft4
+assign [class="Spotify"] $music
+assign [instance="Spotify"] $music
+assign [title="Spotify"] $music
+for_window [class="Spotify"] move to workspace $music
+assign [class="Thunderbird"] $mail
+assign [class="mpv"] $streams
+assign [class="vlc"] $streams
+assign [class="Signal"] $communicate
+
+for_window [class="com-intellij-rt-execution-application-AppMain"] floating enable
+for_window [class="Pavucontrol"] floating enable
+# for_window [class="RocketLeague"] fullscreen enable
+
+
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -154,10 +210,10 @@ mode "resize" {
         # Pressing down will grow the window’s height.
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize shrink height 10 px or 10 ppt
-        bindsym Up resize grow height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize shrink height 5 px or 5 ppt
+        bindsym Up resize grow height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -169,54 +225,121 @@ bindsym $mod+r mode "resize"
 # open common applications
 
 mode "open" {
-        
-        bindsym a exec google-chrome-stable; mode "default"
-        bindsym s exec steam; mode "default"
-        bindsym d exec "nautilus --no-desktop"; mode "default"
-        bindsym q exec "gnome-calculator"; mode "default"
-        bindsym x exec "texstudio"; mode "default"
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    bindsym f exec "firefox -not-remote"; mode "default"
+    bindsym s exec steam; mode "default"
+    bindsym t exec "thunar"; mode "default"
+	bindsym i exec intellij; mode "default"
+	bindsym p exec pycharm; mode "default"
+    bindsym q exec "gnome-calculator"; mode "default"
+	bindsym w exec "gedit"; mode "default"
+	bindsym m exec --no-startup-id i3-msg 'exec spotify'; mode "default"
+    bindsym g mode "game"
+    bindsym r exec "rhythmbox"; mode "default"
+    bindsym e mode "execute"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
+
+mode "execute" {
+	bindsym l exec "bash /home/frederik/Dropbox/Programming/scripts/wallpaper.sh"; mode "default"
+	bindsym p exec "bash /home/frederik/Dropbox/Programming/scripts/lockScreenToggle.sh"; mode "default"
+	bindsym u exec "bash /home/frederik/Documents/test/testbashinput.sh"; mode "default"
+}
+
+mode "game" {
+    bindsym t exec "steam steam://rungameid/440"; mode "default"
+    bindsym b exec "steam steam://rungameid/250900"; mode "default"
+}    
 
 bindsym $mod+z mode "open"
 
+mode "emoji" {
+     bindsym 7 exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 😊"; mode "default"
+     bindsym d exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 😄"; mode "default"
+     bindsym q exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 😘"; mode "default"
+     bindsym 3 exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh ❤"; mode "default"
+     bindsym p exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 😛"; mode "default"
+     bindsym l exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh '\lambda'"; mode "default"
+
+
+     bindsym m exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh frederik.lauridsen@gmail.com"; mode "default"
+     bindsym n exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 'Frederik Aarup Lauridsen'"; mode "default"
+     bindsym a exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 'Fuglesangs Alle 144, 1,-3'"; mode "default"
+
+
+     # back to normal: Enter or Escape
+     bindsym Return mode "default"	
+     bindsym Escape mode "default"
+}
+
+bindsym $mod+x mode "emoji"
+
+mode "math" {
+     bindsym l exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh Λ"; mode "default"
+     bindsym i exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh ∈"; mode "default"
+     bindsym s exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh Σ"; mode "default"
+}
+
+bindsym $mod3+m mode "math"
+
 # to get keynames interactively, run xev in terminal
 # Custom shortcuts:
-bindsym XF86AudioRaiseVolume exec amixer -q set Master 2%+ unmute
-bindsym XF86AudioLowerVolume exec amixer -q set Master 2%- unmute
-bindsym Pause exec /home/frederik/Scripts/break_key.sh
-bindsym $mod+Shift+k exec /home/frederik/Scripts/openMySite.sh
+bindsym XF86AudioRaiseVolume exec "amixer -q set Master 2%+ unmute; pkill -RTMIN+10 i3blocks"
+bindsym XF86AudioLowerVolume exec "amixer -q set Master 2%- unmute; pkill -RTMIN+10 i3blocks"
+bindsym XF86AudioPlay exec playerctl -p spotify play-pause
+bindsym XF86AudioPause exec playerctl -p spotify play-pause
+bindsym XF86AudioNext exec playerctl -p spotify next
+bindsym XF86AudioPrev exec playerctl -p spotify previous
+bindsym Pause exec /home/frederik/Dropbox/Programming/scripts/break_key.sh
+bindsym $mod+Shift+k exec /home/frederik/Dropbox/Programming/scripts/openMySite.sh
 bindsym $mod+ae move workspace to output right
-bindsym $mod+o exec bash /home/frederik/Scripts/toggle_monitor_rotation.sh
-bindsym Print exec scrot
+bindsym $mod+o exec bash /home/frederik/Dropbox/Programming/scripts/toggle_monitor_rotation.sh
+bindsym Print exec "scrot ~/Pictures/screenshots/%Y-%m-%d\ %H:%M:%S.png"
+bindsym $mod+Print exec "gnome-screenshot -a"
 bindsym $mod+l exec "bash /home/frederik/Dropbox/Programming/scripts/lockscreen.sh"
 bindsym $mod+y fullscreen disable; floating enable; resize set 400 300
-
+bindsym $mod+$mod2+Return exec xfce4-terminal -e 'ssh -p 1700 frederik@fredstesting.dk'
+bindsym $mod+i exec xdotool mousedown 3
 
 # Auto start:
 exec --no-startup-id dropbox start
-exec_always --no-startup-id i3-msg 'bash /home/frederik/Scripts/wallpaper.sh'
 exec xset s 3600 3600
-exec xautolock -time 15 -locker "bash /home/frederik/Dropbox/Programming/scripts/lockscreen.sh"
+exec xautolock -time 15 -notify 10 -corners 00-0 -locker "bash /home/frederik/Dropbox/Programming/scripts/lockscreen.sh"
 exec --no-startup-id i3-msg 'exec gnome-system-monitor'
-exec --no-startup-id i3-msg 'exec gnome-control-center sound'
-exec --no-startup-id i3-msg 'workspace $workleft1; exec google-chrome-stable'
+exec --no-startup-id i3-msg 'exec pavucontrol'
+exec --no-startup-id i3-msg 'exec /home/frederik/Dropbox/Programming/scripts/open-settings.sh'
+# exec --no-startup-id i3-msg 'exec spotify'
+# exec --no-startup-id i3-msg 'workspace $workleft2; exec i3-sensible-terminal'
+exec --no-startup-id i3-msg 'workspace $workleft1; exec firefox'
+exec --no-startup-id i3-msg exec 'bash /home/frederik/Dropbox/Programming/scripts/wallpaper.sh'
+exec --no-startup-id i3-msg exec 'xmodmap ~/.Xmodmap'
+exec i3-msg "exec xrandr --output DVI-D-0 --primary"
+exec i3-msg "exec redshift -l 56.2639:9.5018"
+# exec --no-startup-id i3-msg exec "bash /home/frederik/Dropbox/Programming/scripts/monitor-orientation.sh"
+exec --no-startup-id i3-msg "exec thunderbird"
+exec --no-startup-id i3-msg "exec signal-desktop"
+exec --no-startup-id i3-msg exec 'bash /home/frederik/Dropbox/Programming/scripts/removeStartupNotifications.sh'
+exec --no-startup-id exec compton -b
+
 
 # Set colors of i3
+#bd 484d56
+#txt color f3f4f5
 
 set $bg-color            #2f343f
+set $bd-color            #2f343f
 set $inactive-bg-color   #2f343f
-set $text-color          #f3f4f5
+set $text-color          #d69515
 set $inactive-text-color #676E7D
 set $urgent-bg-color     #E53935
 set $indicator           #d38585
 
 # window colors
 #                       border              background         text                 indicator
-client.focused          $bg-color           $bg-color          $text-color          $indicator
+client.focused          $bd-color           $bg-color          $text-color          $indicator
 client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color  $indicator
 client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color  $indicator
 client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $indicator
@@ -224,11 +347,12 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command 	i3status --config ~/.i3status.conf
-	#status_command i3blocks -c ~/.i3/i3blocks.conf
+        #status_command 	i3status --config ~/.i3status.conf
+	status_command i3blocks
         position 	top
 	workspace_buttons yes
-        font pango:DejaVu Sans Mono, Awesome 8
+        font pango:Cousine, FontAwesome 8
+	tray_output DVI-D-0
         colors {
                 background $bg-color
                 separator #757575
@@ -238,4 +362,3 @@ bar {
                 urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
         }
 }
-
