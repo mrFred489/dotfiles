@@ -140,24 +140,7 @@ export LANG="en_DK.UTF-8"
 complete -W "braintm cobaltstreak librizzi hypnotizd_ northernarena_cs jonbams oisketchio wyld matrixis proleaguecsgob epicenter_en1 northernarena proleaguecsgo iamsp00n larsfest admiralbahroo eleaguetv unutf2 blackoutgamingtv sideshow studucky rocketleague clockwork dbhyden lifewithstrife shade seanbud slashsp mlg ideaot krognol cyber_1 starladder_cs_en esl_greatfrag faceittv2 xelnas armshouse pgl braintm counterpit esea randomrambo quill18 sleepcycles thatguytagg dreamhackcs teamfortresstv roomonfire esl_csgo truktruk hiko faceittv misterslin problemsirl witwix northernlion cobaltstreak diatech jessassin richard_hammer xisuma pauseunpause notch ster jerma985 deadpine buttonboy13 hutch itslewdicolo batterychris mclaffytaffy manvsgame gamesdonequick" live
 complete -W "Pervasive Concurrency MatMod SoftArc" d
 
-alias skyp="PULSE_PROP='filter.want=echo-cancel' skype"
-alias settings="gnome-control-center"
-alias calculator="gnome-calculator"
-alias system-monitor="gnome-system-monitor"
-alias filebrowser="nautilus --no-desktop"
-alias disk-usage-analyzer="baobab"
-alias sushu="pkill spotify; sudo apt update; sudo apt dist-upgrade; sudo shutdown -P now"
-alias openMinecraft="java -jar /home/frederik/Applications/Minecraft.jar"
-alias openPyCharm="bash /home/frederik/Applications/pycharm/bin/pycharm.sh"
-alias pdfviewer="evince"
-alias go-mac-server="ssh -p 1489 frederik@84.238.86.227"
-alias lls="ls -AgGh --color=auto"
-alias go-fresh="ssh mrfred@fh.cs.au.dk"
-alias go-home="ssh -p 1700 jf@$JF_LOCATION"
-alias seeVideo="mpv --ytdl-format=best"
-alias internetUsage="vnstati -vs -o /tmp/internetUsage; eog /tmp/internetUsage"
-alias search="find . -type f -name"
-alias uni="cdl /home/frederik/Dropbox/Uni"
-export JAVA_HOME=/usr/bin/java
-export CATALINA_HOME=/usr/share/tomcat8
-export NO_AT_BRIDGE=1
+# Add bash aliases.
+if [ -f ~/.bash_aliases ]; then
+    source ~/.bash_aliases
+fi
