@@ -27,6 +27,7 @@
 (setq indent-line-function 'insert-tab)
 (global-linum-mode 1)
 (setq linum-format "%d ")
+(add-hook 'text-mode-hook 'visual-line-mode)
 
 (package-initialize)
 (elpy-enable)

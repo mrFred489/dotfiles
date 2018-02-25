@@ -19,8 +19,6 @@ ark theme: https://github.com/horst3180/Arc-theme
 
 Livestreamer
 
-google-chrome
-
 atom
 
 intellij idea
