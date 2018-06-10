@@ -135,9 +135,19 @@ cdl(){
 	ls -AgGh --color=auto $2
 }
 
+go(){
+    if [ $1 == "home" ]; then
+	ssh -p 1700 frederik@frederikal.dk
+    else if [  $1 == "fresh" ]; then
+	ssh mrfred@fh.cs.au.dk
+    fi
+    fi
+}
+
 export LANG="en_DK.UTF-8"
 
-complete -W "braintm cobaltstreak librizzi hypnotizd_ northernarena_cs jonbams oisketchio wyld matrixis proleaguecsgob epicenter_en1 northernarena proleaguecsgo iamsp00n larsfest admiralbahroo eleaguetv unutf2 blackoutgamingtv sideshow studucky rocketleague clockwork dbhyden lifewithstrife shade seanbud slashsp mlg ideaot krognol cyber_1 starladder_cs_en esl_greatfrag faceittv2 xelnas armshouse pgl braintm counterpit esea randomrambo quill18 sleepcycles thatguytagg dreamhackcs teamfortresstv roomonfire esl_csgo truktruk hiko faceittv misterslin problemsirl witwix northernlion cobaltstreak diatech jessassin richard_hammer xisuma pauseunpause notch ster jerma985 deadpine buttonboy13 hutch itslewdicolo batterychris mclaffytaffy manvsgame gamesdonequick" live
+complete -W "$(cat ~/.scriptstuff/livenames.txt)" live
+
 complete -W "Pervasive Concurrency MatMod SoftArc" d
 
 # Add bash aliases.
