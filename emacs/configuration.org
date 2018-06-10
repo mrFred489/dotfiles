@@ -1,0 +1,413 @@
+#+TITLE: Emacs configuration
+
+# Shamelessly inspired by hrs: https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
+
+
+* Configure use-package and package managers
+
+#+BEGIN_SRC emacs-lisp
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(require 'use-package)
+(use-package auto-compile
+  :config (auto-compile-on-load-mode))
+
+
+(prefer-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp
+  ;; MELPA
+  (require 'package) ;; You might already have this line
+  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+              (not (gnutls-available-p))))
+         (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
+    (add-to-list 'package-archives (cons "melpa" url) t))
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+
+  ;; MELPA slut
+
+  (defvar local-packages '(auto-complete elpy flycheck jedi magit projectile epc))
+
+  (defun uninstalled-packages (packages)
+    (delq nil
+        (mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
+  (let ((need-to-install (uninstalled-packages local-packages)))
+    (when need-to-install
+    (progn
+      (package-refresh-contents)
+      (dolist (p need-to-install)
+        (package-install p)))))
+#+END_SRC
+
+* Set personal information
+
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Frederik Aarup Lauridsen"
+      user-mail-address "frederik.lauridsen@gmail.com"
+      calendar-latitude 56.16
+      calendar-longitude 10.20
+      calendar-location-name "Aarhus, Denmark")
+#+END_SRC
+
+* Add resources to load-path
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/libraries/")
+#+END_SRC
+
+
+* Utility functions
+
+#+BEGIN_SRC emacs-lisp
+(defun hrs/append-to-path (path)
+  "Add a path both to the $PATH variable and to Emacs' exec-path."
+  (setenv "PATH" (concat (getenv "PATH") ":" path))
+  (add-to-list 'exec-path path))
+#+END_SRC
+
+* UI preferences
+
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (scroll-bar-mode -1))
+(tool-bar-mode 0)
+(menu-bar-mode 1)
+#+END_SRC
+
+** Pretty symbols
+#+BEGIN_SRC emacs-lisp
+(global-prettify-symbols-mode t)
+#+END_SRC
+
+
+** Disable bell
+
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+
+
+** Highlight current line
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (global-hl-line-mode))
+#+END_SRC
+
+
+** Highlight uncommitted changes
+#+BEGIN_SRC emacs-lisp
+(require 'diff-hl)
+
+(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode)
+#+END_SRC
+
+** Programming
+
+*** Better handling of CamelCase words
+#+BEGIN_SRC emacs-lisp
+(global-subword-mode 1)
+#+END_SRC
+
+*** Show what is not committed
+#+BEGIN_SRC emacs-lisp
+(require 'diff-hl)
+
+(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode)
+#+END_SRC
+
+*** Lisps
+#+BEGIN_SRC emacs-lisp
+(setq lispy-mode-hooks
+      '(clojure-mode-hook
+        emacs-lisp-mode-hook
+        lisp-mode-hook
+        scheme-mode-hook))
+
+(dolist (hook lispy-mode-hooks)
+  (add-hook hook (lambda ()
+                   (setq show-paren-style 'expression)
+                   (paredit-mode)
+                   (rainbow-delimiters-mode))))
+#+END_SRC
+
+*** Python
+
+#+BEGIN_SRC emacs-lisp
+(elpy-enable)
+(add-hook 'elpy-mode-hook 'flycheck-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(require 'jedi)
+(add-to-list 'ac-sources 'ac-source-jedi-direct)
+(add-hook 'python-mode-hook 'jedi:setup)
+#+END_SRC
+
+
+*** web-mode
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'web-mode-hook
+          (lambda ()
+            (rainbow-mode)
+            (rspec-mode)
+            (setq web-mode-markup-indent-offset 2)))
+#+END_SRC
+
+
+*** Terminal
+
+#+BEGIN_SRC emacs-lisp
+(defun hrs/term-paste (&optional string)
+  (interactive)
+  (process-send-string
+   (get-buffer-process (current-buffer))
+   (if string string (current-kill 0))))
+
+(add-hook 'term-mode-hook
+          (lambda ()
+            (goto-address-mode)
+            (define-key term-raw-map (kbd "C-y") 'hrs/term-paste)
+            (setq yas-dont-activate t)))
+#+END_SRC
+
+* Working in emacs
+
+Setting the ls arguments for dired
+#+BEGIN_SRC emacs-lisp
+(setq-default dired-listing-switches "-lhvA")
+#+END_SRC
+
+Projectile
+
+#+BEGIN_SRC emacs-lisp
+  (projectile-global-mode)
+#+END_SRC
+
+
+
+
+
+
+* Org mode
+
+Spell checking
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode 'flyspell-mode)
+  (setq ispell-program-name "/usr/bin/aspell")
+  (defun list-of-list-to-matrix (b e)
+    (interactive "r")
+    (replace-string "[" "" nil b (+ b 3))  
+    (replace-string "]" "" nil (- e 4) e)  
+    (replace-string " " "" nil b e)
+    (replace-string "],[" "\\\\\n" nil b e)
+    (replace-string "," " & " nil b e)
+    )
+  (add-hook 'org-mode 'list-of-list-to-matrix())
+  (add-hook 'doc-view-mode-hook (lambda () (auto-revert-mode 1)))
+#+END_SRC
+
+Kør python kode i orgmode
+
+#+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
+(setq org-babel-python-command "python3")
+
+#+END_SRC
+
+Agenda/todo
+
+#+BEGIN_SRC 
+;; set key for agenda
+(global-set-key (kbd "C-c a") 'org-agenda)
+
+;;file to save todo items
+(setq org-agenda-files (quote ("~/Dropbox/dotfiles/emacs/todo.org")))
+
+;;set priority range from A to C with default A
+(setq org-highest-priority ?A)
+(setq org-lowest-priority ?C)
+(setq org-default-priority ?A)
+
+;;set colours for priorities
+(setq org-priority-faces '((?A . (:foreground "#F0DFAF" :weight bold))
+                           (?B . (:foreground "LightSteelBlue"))
+                           (?C . (:foreground "OliveDrab"))))
+
+;;open agenda in current window
+(setq org-agenda-window-setup (quote current-window))
+
+;;capture todo items using C-c c t
+(define-key global-map (kbd "C-c c") 'org-capture)
+(setq org-capture-templates
+      '(("t" "todo" entry (file+headline "~/Dropbox/dotfiles/emacs/todo.org" "Tasks")
+         "* TODO [#A] %?")))
+#+END_SRC
+
+Syntax highlighting in source blocks
+
+#+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t)
+#+END_SRC
+
+Tab acts correctly in source blocks
+#+BEGIN_SRC emacs-lisp
+(setq org-src-tab-acts-natively t)
+#+END_SRC
+
+Dont ask to evaluate code
+#+BEGIN_SRC emacs-lisp
+(setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+* Editing settings
+
+#+BEGIN_SRC emacs-lisp
+(hrs/append-to-path "/usr/local/bin")
+(hrs/append-to-path "~/.local/bin/")
+#+END_SRC
+
+Auto complete, used in elpy
+
+#+BEGIN_SRC emacs-lisp
+  (require 'auto-complete-config)
+  (ac-config-default)
+  (setq ac-auto-show-menu (* ac-delay 2))
+#+END_SRC
+
+Setting environment, primarily for postgresql
+#+BEGIN_SRC emacs-lisp
+(setenv "LANG" "en_US.UTF-8")
+(setenv "LC_CTYPE" "en_US.UTF-8")
+(setenv "LC_ALL" "en_US.UTF-8")
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist `(("." . "~/.saves")))
+  (icomplete-mode 99)
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq indent-line-function 'insert-tab)
+  (global-linum-mode 0)
+  (setq linum-format "%d ")
+  (add-hook 'text-mode-hook 'visual-line-mode)
+  (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
+  (add-hook 'prog-mode-hook 
+            (lambda ()
+              ))
+
+#+END_SRC
+
+
+
+* Keybinds
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<down>") (kbd "C-u 3 C-v"))
+(global-set-key (kbd "<up>") (kbd "C-u 3 M-v"))
+(global-set-key (kbd "M-_") 'comment-or-uncomment-region)
+(defun fal/visit-emacs-config ()
+  (interactive)
+  (find-file "~/Dropbox/dotfiles/emacs/configuration.org"))
+
+(global-set-key (kbd "C-c e") 'fal/visit-emacs-config)
+(setq ns-right-option-modifier nil)
+;;(define-key key-translation-map [(meta ?8)] [?\[])
+;;(define-key key-translation-map [(meta ?9)] [?\]])
+#+END_SRC
+
+Jedi 
+
+#+BEGIN_SRC emacs-lisp
+  (defun jedi-config:setup-keys ()
+        (local-set-key (kbd "M-.") 'jedi:goto-definition)
+        (local-set-key (kbd "M-,") 'jedi:goto-definition-pop-marker)
+        (local-set-key (kbd "M-?") 'jedi:show-doc)
+        (local-set-key (kbd "M--") 'jedi:get-in-function-call))
+  (setq jedi:complete-on-dot t)
+  (add-hook 'python-mode-hook 'jedi-config:setup-keys)
+#+END_SRC
+
+* Dependencies
+- rainbow-delimiters
+- paredit
+- flycheck
+  - flycheck-pycheck
+- elpy 
+  - rope
+  - jedi
+  - flake8
+  - autopep8
+  - yapf
+- use-package
+- diff-hl
+
+
+
+
+
+* Variables and themes
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(ansi-color-faces-vector
+     [default default default italic underline success warning error])
+   '(ansi-color-names-vector
+     ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+   '(custom-enabled-themes nil)
+   '(custom-safe-themes
+     (quote
+      ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
+   '(elpy-rpc-python-command "python3")
+   '(package-selected-packages
+     (quote
+      (ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
+   '(python-shell-interpreter "python3")
+   '(tab-stop-list (number-sequence 4 200 4))
+   '(elfeed-feeds 
+         '("http://feeds.feedburner.com/TroyHunt?format=xml"
+           "http://nullprogram.com/feed/"
+           "http://planet.emacsen.org/atom.xml"))
+  )
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
+
+
+
+
+
+
+
+
+      
+
+  ;; (eval-after-load "LaTeX")
+
+
+
+  ;;#+attr_latex: :mode math :environment pmatrix
+  ;;|               1 |        2 |
+  ;;|               3 |        4 |
+  ;;| \alpha + \sum_1 | p_k+2(2) |
+
+#+END_SRC
