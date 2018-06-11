@@ -316,17 +316,18 @@ Setting environment, primarily for postgresql
 * Keybinds
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<down>") (kbd "C-u 3 C-v"))
-(global-set-key (kbd "<up>") (kbd "C-u 3 M-v"))
-(global-set-key (kbd "M-_") 'comment-or-uncomment-region)
-(defun fal/visit-emacs-config ()
-  (interactive)
-  (find-file "~/Dropbox/dotfiles/emacs/configuration.org"))
+  (global-set-key (kbd "<down>") (kbd "C-u 3 C-v"))
+  (global-set-key (kbd "<up>") (kbd "C-u 3 M-v"))
+  (global-set-key (kbd "M-_") 'comment-or-uncomment-region)
+  (global-set-key (kbd "C-c m") 'magit-status)
+  (defun fal/visit-emacs-config ()
+    (interactive)
+    (find-file "~/Dropbox/dotfiles/emacs/configuration.org"))
 
-(global-set-key (kbd "C-c e") 'fal/visit-emacs-config)
-(setq ns-right-option-modifier nil)
-;;(define-key key-translation-map [(meta ?8)] [?\[])
-;;(define-key key-translation-map [(meta ?9)] [?\]])
+  (global-set-key (kbd "C-c e") 'fal/visit-emacs-config)
+  (setq ns-right-option-modifier nil)
+  ;;(define-key key-translation-map [(meta ?8)] [?\[])
+  ;;(define-key key-translation-map [(meta ?9)] [?\]])
 #+END_SRC
 
 Jedi 
