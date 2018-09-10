@@ -1,7 +1,10 @@
 #+TITLE: Emacs configuration
 
 # Shamelessly inspired by hrs: https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
-
+# https://github.com/magnars/.emacs.d/
+# https://github.com/technomancy/better-defaults
+# https://github.com/purcell/emacs.d
+# https://github.com/abo-abo/oremacs
 
 * Configure use-package and package managers
 
@@ -16,7 +19,6 @@
 
 (prefer-coding-system 'utf-8)
 (set-language-environment "UTF-8")
-
 #+END_SRC
 
 
@@ -46,6 +48,16 @@
         (package-install p)))))
 #+END_SRC
 
+* Configure emacs defaults
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
+  (global-set-key (kbd "C-x C-c") 'delete-frame)
+  (setq initial-buffer-choice "~/Nextcloud/Documents/uni")
+#+END_SRC
+
+
+
 * Set personal information
 
 #+BEGIN_SRC emacs-lisp
@@ -62,23 +74,46 @@
 (add-to-list 'load-path "~/.emacs.d/libraries/")
 #+END_SRC
 
-
 * Utility functions
 
 #+BEGIN_SRC emacs-lisp
-(defun hrs/append-to-path (path)
-  "Add a path both to the $PATH variable and to Emacs' exec-path."
-  (setenv "PATH" (concat (getenv "PATH") ":" path))
-  (add-to-list 'exec-path path))
+  (defun hrs/append-to-path (path)
+    "Add a path both to the $PATH variable and to Emacs' exec-path."
+    (setenv "PATH" (concat (getenv "PATH") ":" path))
+    (add-to-list 'exec-path path))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun sudo-edit (&optional arg)
+    (interactive "p")
+    (if (or arg (not buffer-file-name))
+        (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+      (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+#+END_SRC
+
+Creating matrices
+#+BEGIN_SRC emacs-lisp
+  (defun list-of-list-to-matrix (b e)
+    (interactive "r")
+    (replace-string "[" "" nil b (+ b 3))  
+    (replace-string "]" "" nil (- e 4) e)  
+    (replace-string " " "" nil b e)
+    (replace-string "],[" "\\\\\n" nil b e)
+    (replace-string "," " & " nil b e)
+    )
 #+END_SRC
 
 * UI preferences
 
 #+BEGIN_SRC emacs-lisp
-(when window-system
-  (scroll-bar-mode -1))
-(tool-bar-mode 0)
-(menu-bar-mode 1)
+  (when window-system
+    (scroll-bar-mode -1))
+  (add-hook 'text-mode-hook
+            (lambda ()
+              (variable-pitch-mode 1)))
+  (tool-bar-mode 0)
+  (menu-bar-mode 1)
+  (show-paren-mode 1)
 #+END_SRC
 
 ** Pretty symbols
@@ -100,14 +135,6 @@
   (global-hl-line-mode))
 #+END_SRC
 
-
-** Highlight uncommitted changes
-#+BEGIN_SRC emacs-lisp
-(require 'diff-hl)
-
-(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode)
-#+END_SRC
 
 ** Programming
 
@@ -135,7 +162,6 @@
 (dolist (hook lispy-mode-hooks)
   (add-hook hook (lambda ()
                    (setq show-paren-style 'expression)
-                   (paredit-mode)
                    (rainbow-delimiters-mode))))
 #+END_SRC
 
@@ -167,17 +193,17 @@
 *** Terminal
 
 #+BEGIN_SRC emacs-lisp
-(defun hrs/term-paste (&optional string)
-  (interactive)
-  (process-send-string
-   (get-buffer-process (current-buffer))
-   (if string string (current-kill 0))))
+  (defun hrs/term-paste (&optional string)
+    (interactive)
+    (process-send-string
+     (get-buffer-process (current-buffer))
+     (if string string (current-kill 0))))
 
-(add-hook 'term-mode-hook
-          (lambda ()
-            (goto-address-mode)
-            (define-key term-raw-map (kbd "C-y") 'hrs/term-paste)
-            (setq yas-dont-activate t)))
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (goto-address-mode)
+              (define-key term-raw-map (kbd "C-y") 'hrs/term-paste)
+              (setq yas-dont-activate t)))
 #+END_SRC
 
 * Working in emacs
@@ -193,7 +219,10 @@ Projectile
   (projectile-global-mode)
 #+END_SRC
 
-
+Add new lines when going down
+#+BEGIN_SRC emacs-lisp
+  (setq next-line-add-newlines t)
+#+END_SRC
 
 
 
@@ -205,14 +234,10 @@ Spell checking
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode 'flyspell-mode)
   (setq ispell-program-name "/usr/bin/aspell")
-  (defun list-of-list-to-matrix (b e)
-    (interactive "r")
-    (replace-string "[" "" nil b (+ b 3))  
-    (replace-string "]" "" nil (- e 4) e)  
-    (replace-string " " "" nil b e)
-    (replace-string "],[" "\\\\\n" nil b e)
-    (replace-string "," " & " nil b e)
-    )
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode 'list-of-list-to-matrix())
   (add-hook 'doc-view-mode-hook (lambda () (auto-revert-mode 1)))
 #+END_SRC
@@ -229,7 +254,7 @@ Kør python kode i orgmode
 
 Agenda/todo
 
-#+BEGIN_SRC 
+#+BEGIN_SRC emacs-lisp
 ;; set key for agenda
 (global-set-key (kbd "C-c a") 'org-agenda)
 
@@ -277,6 +302,8 @@ Dont ask to evaluate code
 #+BEGIN_SRC emacs-lisp
 (hrs/append-to-path "/usr/local/bin")
 (hrs/append-to-path "~/.local/bin/")
+(hrs/append-to-path "~/.local/bin/")
+
 #+END_SRC
 
 Auto complete, used in elpy
@@ -313,6 +340,7 @@ Setting environment, primarily for postgresql
 
 
 
+
 * Keybinds
 
 #+BEGIN_SRC emacs-lisp
@@ -322,7 +350,7 @@ Setting environment, primarily for postgresql
   (global-set-key (kbd "C-c m") 'magit-status)
   (defun fal/visit-emacs-config ()
     (interactive)
-    (find-file "~/Dropbox/dotfiles/emacs/configuration.org"))
+    (find-file "~/Nextcloud/Documents/dotfiles/emacs/configuration.org"))
 
   (global-set-key (kbd "C-c e") 'fal/visit-emacs-config)
   (setq ns-right-option-modifier nil)
@@ -359,56 +387,57 @@ Jedi
 
 
 
-
 * Variables and themes
 #+BEGIN_SRC emacs-lisp
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(ansi-color-faces-vector
-     [default default default italic underline success warning error])
-   '(ansi-color-names-vector
-     ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
-   '(custom-enabled-themes nil)
-   '(custom-safe-themes
-     (quote
-      ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
-   '(elpy-rpc-python-command "python3")
-   '(package-selected-packages
-     (quote
-      (ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
-   '(python-shell-interpreter "python3")
-   '(tab-stop-list (number-sequence 4 200 4))
-   '(elfeed-feeds 
-         '("http://feeds.feedburner.com/TroyHunt?format=xml"
-           "http://nullprogram.com/feed/"
-           "http://planet.emacsen.org/atom.xml"))
-  )
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
+  (load-theme 'poet t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+   (custom-set-variables
+    ;; custom-set-variables was added by Custom.
+    ;; If you edit it by hand, you could mess it up, so be careful.
+    ;; Your init file should contain only one such instance.
+    ;; If there is more than one, they won't work right.
+    '(ansi-color-faces-vector
+      [default default default italic underline success warning error])
+    '(ansi-color-names-vector
+      ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+  '(elpy-mode-hook
+    (quote
+     (subword-mode
+      (lambda nil
+        (highlight-indentation-mode -1))
+      flycheck-mode)))
+    '(elpy-rpc-python-command "python3")
+    '(org-file-apps
+    (quote
+     ((auto-mode . emacs)
+      ("\\.mm\\'" . default)
+      ("\\.x?html?\\'" . default)
+      ("\\.pdf\\'" . emacs))))
+    '(package-selected-packages
+      (quote
+       (ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
+    '(package-selected-packages
+    (quote
+     (exwm xelb auto-complete-auctex org-bullets uimage auctex latex-pretty-symbols pretty-symbols projectile jedi auto-complete elfeed flycheck-pycheckers flycheck ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
+    '(python-shell-interpreter "python3")
+    '(tab-stop-list (number-sequence 4 200 4))
+    '(elfeed-feeds 
+          '("http://feeds.feedburner.com/TroyHunt?format=xml"
+            "http://nullprogram.com/feed/"
+            "http://planet.emacsen.org/atom.xml"))
    )
-
-
-
-
-
-
-
-
-      
-
-  ;; (eval-after-load "LaTeX")
-
-
-
-  ;;#+attr_latex: :mode math :environment pmatrix
-  ;;|               1 |        2 |
-  ;;|               3 |        4 |
-  ;;| \alpha + \sum_1 | p_k+2(2) |
+   (custom-set-faces
+    ;; custom-set-faces was added by Custom.
+    ;; If you edit it by hand, you could mess it up, so be careful.
+    ;; Your init file should contain only one such instance.
+    ;; If there is more than one, they won't work right.
+    )
+   ;; (eval-after-load "LaTeX")
+   ;;#+attr_latex: :mode math :environment pmatrix
+   ;;|               1 |        2 |
+   ;;|               3 |        4 |
+   ;;| \alpha + \sum_1 | p_k+2(2) |
 
 #+END_SRC
