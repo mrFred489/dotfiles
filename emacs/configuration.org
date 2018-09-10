@@ -51,6 +51,7 @@
 * Configure emacs defaults
 
 #+BEGIN_SRC emacs-lisp
+
   (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
   (global-set-key (kbd "C-x C-c") 'delete-frame)
   (setq initial-buffer-choice "~/Nextcloud/Documents/uni")
@@ -337,9 +338,6 @@ Setting environment, primarily for postgresql
               ))
 
 #+END_SRC
-
-
-
 
 * Keybinds
 
