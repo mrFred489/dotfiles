@@ -50,13 +50,21 @@
 
 * Configure emacs defaults
 
+Don't accidentally close everything
 #+BEGIN_SRC emacs-lisp
-
   (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
   (global-set-key (kbd "C-x C-c") 'delete-frame)
-  (setq initial-buffer-choice "~/Nextcloud/Documents/uni")
 #+END_SRC
 
+Custom startup file
+#+BEGIN_SRC emacs-lisp
+  (setq initial-buffer-choice "~/Nextcloud/Documents/dotfiles/emacs/startup.org")
+#+END_SRC
+
+Fix issue with tilde on linux and mac
+#+BEGIN_SRC emacs-lisp
+  (require 'iso-transl)
+#+END_SRC
 
 
 * Set personal information
@@ -237,6 +245,30 @@ Spell checking
   (setq ispell-program-name "/usr/bin/aspell")
 #+END_SRC
 
+Open org links
+#+BEGIN_SRC emacs-lisp
+  (defun org-force-open-current-window ()
+    (interactive)
+    (let ((org-link-frame-setup (quote
+                                 ((vm . vm-visit-folder)
+                                  (vm-imap . vm-visit-imap-folder)
+                                  (gnus . gnus)
+                                  (file . find-file)
+                                  (wl . wl)))
+                                ))
+      (org-open-at-point)))
+  ;; Depending on universal argument try opening link
+  (defun org-open-maybe (&optional arg)
+    (interactive "P")
+    (if arg
+        (org-open-at-point)
+      (org-force-open-current-window)
+      )
+    )
+  ;; Redefine file opening without clobbering universal argumnet
+  (define-key org-mode-map "\C-c\C-o" 'org-open-maybe)
+  (add-to-list 'org-file-apps '(directory . emacs))
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode 'list-of-list-to-matrix())
