@@ -1,7 +1,7 @@
 #+TITLE: Welcome
-[[~/uni/comgeo(Computational Geometry Theory and Experimentation)/][Computational Geometry]]
-[[~/uni/iot(Building the Internet of Things with P2P and Cloud Computing)][Internet of Things]]
-[[~/uni/pav(Program Analysis and Verification)][Program Analysis and Verification]]
+[[~/uni/comgeo(Computational Geometry Theory and Experimentation)/][Computational Geometry]] [[~/uni/comgeo(Computational Geometry Theory and Experimentation)/notes.org][notes]]
+[[~/uni/iot(Building the Internet of Things with P2P and Cloud Computing)][Internet of Things]] [[~/uni/iot(Building the Internet of Things with P2P and Cloud Computing)/notes.org][notes]]
+[[~/uni/pav(Program Analysis and Verification)][Program Analysis and Verification]] [[~/uni/pav(Program Analysis and Verification)/notes.org][notes]]
 
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
 
