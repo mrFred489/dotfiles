@@ -2,6 +2,7 @@
 [[~/uni/comgeo(Computational Geometry Theory and Experimentation)/][Computational Geometry]] [[~/uni/comgeo(Computational Geometry Theory and Experimentation)/notes.org][notes]]
 [[~/uni/iot(Building the Internet of Things with P2P and Cloud Computing)][Internet of Things]] [[~/uni/iot(Building the Internet of Things with P2P and Cloud Computing)/notes.org][notes]]
 [[~/uni/pav(Program Analysis and Verification)][Program Analysis and Verification]] [[~/uni/pav(Program Analysis and Verification)/notes.org][notes]]
-
+[[/ssh:pi@frederikal.dk#1701:/home/pi/project/][pi]]
+[[/ssh:frederik@frederikal.dk#1700:/home/frederik][home server]]
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
 

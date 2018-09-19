@@ -241,8 +241,8 @@ Add new lines when going down
 Spell checking
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode 'flyspell-mode)
-  (setq ispell-program-name "/usr/bin/aspell")
+  (add-hook 'org-mode-hook 'turn-on-flyspell)
+  (setq ispell-program-name "/usr/local/bin/aspell")
 #+END_SRC
 
 Open org links
@@ -267,12 +267,31 @@ Open org links
     )
   ;; Redefine file opening without clobbering universal argumnet
   (define-key org-mode-map "\C-c\C-o" 'org-open-maybe)
+#+END_SRC
+
+What to open in emacs from org:
+#+BEGIN_SRC emacs-lisp
+    ;; (setq org-file-apps '((auto-mode . emacs)
+    ;;                       ("\\.mm\\'" . default)
+    ;;                       ("\\.x?html?\\'" . default)
+    ;;                       ("\\.pdf\\'" . emacs)
+    ;;                      (directory . emacs)))
+  (add-to-list 'org-file-apps '(auto-mode . emacs))
+  (add-to-list 'org-file-apps '("\\.mm\\'" . default))
+  (add-to-list 'org-file-apps '("\\.x?html?\\'" . default))
+  (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
   (add-to-list 'org-file-apps '(directory . emacs))
+      ;;  (setq org-file-apps '((directory . emacs)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode 'list-of-list-to-matrix())
   (add-hook 'doc-view-mode-hook (lambda () (auto-revert-mode 1)))
+#+END_SRC
+
+Better look of latex previews
+#+BEGIN_SRC emacs-lisp
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+END_SRC
 
 Kør python kode i orgmode
@@ -423,51 +442,45 @@ Jedi
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-   (custom-set-variables
-    ;; custom-set-variables was added by Custom.
-    ;; If you edit it by hand, you could mess it up, so be careful.
-    ;; Your init file should contain only one such instance.
-    ;; If there is more than one, they won't work right.
-    '(ansi-color-faces-vector
-      [default default default italic underline success warning error])
-    '(ansi-color-names-vector
-      ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
-  '(elpy-mode-hook
-    (quote
-     (subword-mode
-      (lambda nil
-        (highlight-indentation-mode -1))
-      flycheck-mode)))
-    '(elpy-rpc-python-command "python3")
-    '(org-file-apps
-    (quote
-     ((auto-mode . emacs)
-      ("\\.mm\\'" . default)
-      ("\\.x?html?\\'" . default)
-      ("\\.pdf\\'" . emacs))))
-    '(package-selected-packages
-      (quote
-       (ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
-    '(package-selected-packages
-    (quote
-     (exwm xelb auto-complete-auctex org-bullets uimage auctex latex-pretty-symbols pretty-symbols projectile jedi auto-complete elfeed flycheck-pycheckers flycheck ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
-    '(python-shell-interpreter "python3")
-    '(tab-stop-list (number-sequence 4 200 4))
-    '(elfeed-feeds 
-          '("http://feeds.feedburner.com/TroyHunt?format=xml"
-            "http://nullprogram.com/feed/"
-            "http://planet.emacsen.org/atom.xml"))
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(ansi-color-faces-vector
+     [default default default italic underline success warning error])
+   '(ansi-color-names-vector
+     ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+   '(elpy-mode-hook
+     (quote
+      (subword-mode
+       (lambda nil
+         (highlight-indentation-mode -1))
+       flycheck-mode)))
+   '(elpy-rpc-python-command "python3")
+   '(package-selected-packages
+     (quote
+      (ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
+   '(package-selected-packages
+     (quote
+      (exwm xelb auto-complete-auctex org-bullets uimage auctex latex-pretty-symbols pretty-symbols projectile jedi auto-complete elfeed flycheck-pycheckers flycheck ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
+   '(python-shell-interpreter "python3")
+   '(tab-stop-list (number-sequence 4 200 4))
+   '(elfeed-feeds 
+     '("http://feeds.feedburner.com/TroyHunt?format=xml"
+       "http://nullprogram.com/feed/"
+       "http://planet.emacsen.org/atom.xml"))
    )
-   (custom-set-faces
-    ;; custom-set-faces was added by Custom.
-    ;; If you edit it by hand, you could mess it up, so be careful.
-    ;; Your init file should contain only one such instance.
-    ;; If there is more than one, they won't work right.
-    )
-   ;; (eval-after-load "LaTeX")
-   ;;#+attr_latex: :mode math :environment pmatrix
-   ;;|               1 |        2 |
-   ;;|               3 |        4 |
-   ;;| \alpha + \sum_1 | p_k+2(2) |
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
+  ;; (eval-after-load "LaTeX")
+  ;;#+attr_latex: :mode math :environment pmatrix
+  ;;|               1 |        2 |
+  ;;|               3 |        4 |
+  ;;| \alpha + \sum_1 | p_k+2(2) |
 
 #+END_SRC
