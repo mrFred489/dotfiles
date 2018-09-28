@@ -21,31 +21,33 @@
 (set-language-environment "UTF-8")
 #+END_SRC
 
-
+package archives
 #+BEGIN_SRC emacs-lisp
   ;; MELPA
   (require 'package) ;; You might already have this line
   (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-              (not (gnutls-available-p))))
+                      (not (gnutls-available-p))))
          (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
     (add-to-list 'package-archives (cons "melpa" url) t))
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
+
   ;; MELPA slut
+  (add-to-list 'package-archives '("org"   . "http://orgmode.org/elpa/"))
 
   (defvar local-packages '(auto-complete elpy flycheck jedi magit projectile epc))
 
   (defun uninstalled-packages (packages)
     (delq nil
-        (mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
+          (mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
   (let ((need-to-install (uninstalled-packages local-packages)))
     (when need-to-install
-    (progn
-      (package-refresh-contents)
-      (dolist (p need-to-install)
-        (package-install p)))))
+      (progn
+        (package-refresh-contents)
+        (dolist (p need-to-install)
+          (package-install p)))))
 #+END_SRC
 
 * Configure emacs defaults
@@ -123,6 +125,8 @@ Creating matrices
   (tool-bar-mode 0)
   (menu-bar-mode 1)
   (show-paren-mode 1)
+  (setq show-paren-delay 0)
+  (setq show-paren-when-point-inside-paren t)
 #+END_SRC
 
 ** Pretty symbols
@@ -291,7 +295,7 @@ What to open in emacs from org:
 
 Better look of latex previews
 #+BEGIN_SRC emacs-lisp
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 #+END_SRC
 
 Kør python kode i orgmode
@@ -355,7 +359,7 @@ Dont ask to evaluate code
 (hrs/append-to-path "/usr/local/bin")
 (hrs/append-to-path "~/.local/bin/")
 (hrs/append-to-path "~/.local/bin/")
-
+(hrs/append-to-path "/Library/TeX/texbin/")
 #+END_SRC
 
 Auto complete, used in elpy
@@ -387,8 +391,9 @@ Setting environment, primarily for postgresql
   (add-hook 'prog-mode-hook 
             (lambda ()
               ))
-
 #+END_SRC
+
+
 
 * Keybinds
 
@@ -418,6 +423,7 @@ Jedi
   (setq jedi:complete-on-dot t)
   (add-hook 'python-mode-hook 'jedi-config:setup-keys)
 #+END_SRC
+
 
 * Dependencies
 - rainbow-delimiters
