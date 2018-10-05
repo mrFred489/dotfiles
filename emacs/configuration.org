@@ -295,7 +295,25 @@ What to open in emacs from org:
 
 Better look of latex previews
 #+BEGIN_SRC emacs-lisp
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2))
+#+END_SRC
+
+Scroll pdf when taking notes
+#+BEGIN_SRC emacs-lisp
+  (defun mrfred-other-doc-view-next-page ()
+      (interactive)
+    (other-window 1)
+    (doc-view-next-page)
+    (other-window 1))
+  (defun mrfred-other-doc-view-prev-page ()
+      (interactive)
+    (other-window 1)
+    (doc-view-previous-page)
+    (other-window 1))
+  (add-hook 'org-mode-hook
+            (lambda () (local-set-key (kbd "C-M-v") 'mrfred-other-doc-view-next-page)))
+  (add-hook 'org-mode-hook
+            (lambda () (local-set-key (kbd "C-M-S-v") 'mrfred-other-doc-view-prev-page)))
 #+END_SRC
 
 Kør python kode i orgmode
