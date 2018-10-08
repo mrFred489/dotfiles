@@ -5,4 +5,4 @@
 [[/ssh:pi@frederikal.dk#1701:/home/pi/project/][pi]]
 [[/ssh:frederik@frederikal.dk#1700:/home/frederik][home server]]
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
-
+[[~/Nextcloud/Documents][Nextcloud]]

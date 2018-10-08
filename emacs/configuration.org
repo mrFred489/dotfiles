@@ -69,6 +69,10 @@ Fix issue with tilde on linux and mac
 #+END_SRC
 
 
+#+BEGIN_SRC emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+#+END_SRC
+
 * Set personal information
 
 #+BEGIN_SRC emacs-lisp
@@ -183,6 +187,7 @@ Creating matrices
 #+BEGIN_SRC emacs-lisp
 (elpy-enable)
 (add-hook 'elpy-mode-hook 'flycheck-mode)
+(setq elpy-rpc-python-command "python3")
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -324,6 +329,7 @@ Kør python kode i orgmode
  '((python . t)))
 (setq org-babel-python-command "python3")
 
+
 #+END_SRC
 
 Agenda/todo
@@ -442,12 +448,15 @@ Jedi
   (add-hook 'python-mode-hook 'jedi-config:setup-keys)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(setq python-shell-interpreter "python3")
+#+END_SRC
 
 * Dependencies
 - rainbow-delimiters
 - paredit
 - flycheck
-  - flycheck-pycheck
+  - flycheck-pyheck
 - elpy 
   - rope
   - jedi
@@ -461,40 +470,13 @@ Jedi
 
 
 * Variables and themes
+
 #+BEGIN_SRC emacs-lisp
   (load-theme 'poet t)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(ansi-color-faces-vector
-     [default default default italic underline success warning error])
-   '(ansi-color-names-vector
-     ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
-   '(elpy-mode-hook
-     (quote
-      (subword-mode
-       (lambda nil
-         (highlight-indentation-mode -1))
-       flycheck-mode)))
-   '(elpy-rpc-python-command "python3")
-   '(package-selected-packages
-     (quote
-      (ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
-   '(package-selected-packages
-     (quote
-      (exwm xelb auto-complete-auctex org-bullets uimage auctex latex-pretty-symbols pretty-symbols projectile jedi auto-complete elfeed flycheck-pycheckers flycheck ac-ispell sml-mode nlinum magit llvm-mode linum-relative lex elpygen elpy)))
-   '(python-shell-interpreter "python3")
-   '(tab-stop-list (number-sequence 4 200 4))
-   '(elfeed-feeds 
-     '("http://feeds.feedburner.com/TroyHunt?format=xml"
-       "http://nullprogram.com/feed/"
-       "http://planet.emacsen.org/atom.xml"))
-   )
+  
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
@@ -508,3 +490,5 @@ Jedi
   ;;| \alpha + \sum_1 | p_k+2(2) |
 
 #+END_SRC
+
+
