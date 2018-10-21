@@ -6,3 +6,4 @@
 [[/ssh:frederik@frederikal.dk#1700:/home/frederik][home server]]
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
 [[~/Nextcloud/Documents][Nextcloud]]
+[[~/Nextcloud/Documents/Programming/kattis][kattis]]
