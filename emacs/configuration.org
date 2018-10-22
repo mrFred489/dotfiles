@@ -139,6 +139,10 @@ Creating matrices
 (global-prettify-symbols-mode t)
 #+END_SRC
 
+Org bullets
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'org-bullets-mode)
+#+END_SRC
 
 ** Disable bell
 
@@ -350,6 +354,8 @@ Spell checking
   ;; (add-hook 'org-mode-hook 'turn-on-flyspell)
   (setq ispell-program-name "/usr/local/bin/aspell")
 #+END_SRC
+
+
 
 Open org links
 #+BEGIN_SRC emacs-lisp
