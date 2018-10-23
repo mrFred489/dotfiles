@@ -5,73 +5,136 @@
 # https://github.com/technomancy/better-defaults
 # https://github.com/purcell/emacs.d
 # https://github.com/abo-abo/oremacs
+# https://github.com/munen/emacs.d
 
-* Configure use-package and package managers
-
-#+BEGIN_SRC emacs-lisp
-
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(require 'use-package)
-(use-package auto-compile
-  :config (auto-compile-on-load-mode))
+* Dependency management
 
 
-(prefer-coding-system 'utf-8)
-(set-language-environment "UTF-8")
-#+END_SRC
+** Use package configuration
+# #+BEGIN_SRC emacs-lisp
 
-package archives
+# (unless (package-installed-p 'use-package)
+#   (package-install 'use-package))
+# (require 'use-package)
+# (use-package auto-compile
+#   :config (auto-compile-on-load-mode))
+
+
+# (prefer-coding-system 'utf-8)
+# (set-language-environment "UTF-8")
+# #+END_SRC
+
+** package archives
 #+BEGIN_SRC emacs-lisp
   ;; MELPA
-  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                      (not (gnutls-available-p))))
-         (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-    (add-to-list 'package-archives (cons "melpa" url) t))
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+  ;;     (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+  ;;                         (not (gnutls-available-p))))
+  ;;            (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
+  ;;       (add-to-list 'package-archives (cons "melpa" url) t))
+  ;;     (when (< emacs-major-version 24)
+  ;;       ;; For important compatibility libraries like cl-lib
+  ;;       (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
-
+  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                           ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")
+                           ("org"   . "http://orgmode.org/elpa/")))
   ;; MELPA slut
-  (add-to-list 'package-archives '("org"   . "http://orgmode.org/elpa/"))
+  ;;     (add-to-list 'package-archives '("org"   . "http://orgmode.org/elpa/"))
+#+END_SRC
 
-  (defvar local-packages '(auto-complete elpy flycheck jedi magit projectile epc
-                                         diff-hl latex-pretty-symbols poet-theme pretty-symbols rainbow-delimiters
-                                         ac-ispell auctex auto-compile flycheck-pycheckers ))
+** Required packages
 
-  (defun uninstalled-packages (packages)
-    (delq nil
-          (mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
-  (let ((need-to-install (uninstalled-packages local-packages)))
-    (when need-to-install
-      (progn
-        (package-refresh-contents)
-        (dolist (p need-to-install)
-          (package-install p)))))
+#+BEGIN_SRC emacs-lisp
+  (defvar local-packages 
+    '(auto-complete 
+      elpy 
+      flycheck 
+      jedi 
+      magit 
+      projectile 
+      epc
+      diff-hl 
+      latex-pretty-symbols 
+      poet-theme 
+      pretty-symbols 
+      rainbow-delimiters
+      ac-ispell 
+      auctex 
+      auto-compile 
+      flycheck-pycheckers 
+      exec-path-from-shell 
+      rainbow-mode ))
+#+END_SRC
+
+** Install dependencies
+
+#+BEGIN_SRC emacs-lisp
+;;   (defun uninstalled-packages (packages)
+;;     (delq nil
+;;           (mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
+;;   (let ((need-to-install (uninstalled-packages local-packages)))
+;;     (when need-to-install
+;;       (progn
+;;         (package-refresh-contents)
+;;         (dolist (p need-to-install)
+;;           (package-install p)))))
+(dolist (p local-packages)
+  (unless (package-installed-p p)
+    (package-refresh-contents)
+    (package-install p))
+  (add-to-list 'package-selected-packages p))
 #+END_SRC
 
 * Configure emacs defaults
 
-Don't accidentally close everything
+** Don't accidentally close everything
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
   (global-set-key (kbd "C-x C-c") 'delete-frame)
 #+END_SRC
 
-Custom startup file
+** Custom startup file
 #+BEGIN_SRC emacs-lisp
   (setq initial-buffer-choice "~/Nextcloud/Documents/dotfiles/emacs/startup.org")
 #+END_SRC
 
-Fix issue with tilde on linux and mac
+** Fix issue with tilde on linux and mac
 #+BEGIN_SRC emacs-lisp
   (require 'iso-transl)
 #+END_SRC
 
-
+** Don't clutter .emacs
 #+BEGIN_SRC emacs-lisp
 (setq custom-file "~/.emacs.d/custom.el")
+#+END_SRC
+
+** Allow 20MB of memory (instead of 0.76MB) before calling garbage collection.
+#+BEGIN_SRC emacs-lisp
+(setq gc-cons-threshold 20000000)
+#+END_SRC
+
+** When opening files, always follow symlinks 
+#+BEGIN_SRC emacs-lisp
+(setq vc-follow-symlinks t)
+#+END_SRC
+
+** Don't assume that sentences should have two spaces after periods.
+#+BEGIN_SRC emacs-lisp
+(setq sentence-end-double-space nil)
+#+END_SRC
+
+** Disable startup message
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-splash-screen t)
+(setq inhibit-startup-message t)
+#+END_SRC
+
+** Better search and completion
+#+BEGIN_SRC emacs-lisp
+(ido-mode t)
+(ido-everywhere t)
+(setq ido-enable-flex-matching t)
 #+END_SRC
 
 * Set personal information
@@ -92,12 +155,16 @@ Fix issue with tilde on linux and mac
 
 * Utility functions
 
+** fix path
+
 #+BEGIN_SRC emacs-lisp
   (defun hrs/append-to-path (path)
     "Add a path both to the $PATH variable and to Emacs' exec-path."
     (setenv "PATH" (concat (getenv "PATH") ":" path))
     (add-to-list 'exec-path path))
 #+END_SRC
+
+** Use sudo to edit file
 
 #+BEGIN_SRC emacs-lisp
   (defun sudo-edit (&optional arg)
@@ -107,7 +174,8 @@ Fix issue with tilde on linux and mac
       (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 #+END_SRC
 
-Creating matrices
+** Creating matrices
+
 #+BEGIN_SRC emacs-lisp
   (defun list-of-list-to-matrix (b e)
     (interactive "r")
@@ -119,6 +187,19 @@ Creating matrices
     )
 #+END_SRC
 
+** Scrolling pdf in other window
+#+BEGIN_SRC emacs-lisp
+  (defun mrfred-other-doc-view-next-page ()
+      (interactive)
+    (other-window 1)
+    (doc-view-next-page)
+    (other-window 1))
+  (defun mrfred-other-doc-view-prev-page ()
+      (interactive)
+    (other-window 1)
+    (doc-view-previous-page)
+    (other-window 1))
+#+END_SRC
 * UI preferences
 
 #+BEGIN_SRC emacs-lisp
@@ -171,6 +252,7 @@ Org bullets
 
 (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
 (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode)
+(add-hook 'org-mode-hook 'turn-on-diff-hl-mode)
 #+END_SRC
 
 *** Lisps
@@ -193,7 +275,7 @@ Org bullets
   ;; (elpy-enable)
   ;; (add-hook 'elpy-mode-hook 'flycheck-mode)
   (setq elpy-rpc-python-command "python3")
-  (add-hook 'python-mode-hook 'flycheck-mode)
+  (add-hook 'after-init-hook #'global-flycheck-mode)
 #+END_SRC
 
 **** Jedi
@@ -297,17 +379,29 @@ Org bullets
                ))
 #+END_SRC
 
-
 *** web-mode
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'web-mode-hook
           (lambda ()
-            (rainbow-mode)
-            (rspec-mode)
             (setq web-mode-markup-indent-offset 2)))
 #+END_SRC
 
+Encode some characters
+#+BEGIN_SRC emacs-lisp
+(defun encode-html (start end)
+  "Encodes HTML entities; works great in Visual Mode (START END)."
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (replace-string "&" "&amp;")
+      (goto-char (point-min))
+      (replace-string "<" "&lt;")
+      (goto-char (point-min))
+      (replace-string ">" "&gt;"))))
+#+END_SRC
 
 *** Terminal
 
@@ -327,37 +421,67 @@ Org bullets
 
 * Working in emacs
 
-Setting the ls arguments for dired
+** Setting the ls arguments for dired
 #+BEGIN_SRC emacs-lisp
 (setq-default dired-listing-switches "-lhvA")
 #+END_SRC
 
-Projectile
+** Projectile
 
 #+BEGIN_SRC emacs-lisp
   (projectile-global-mode)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+END_SRC
 
-Add new lines when going down
+** Add new lines when going down
 #+BEGIN_SRC emacs-lisp
   (setq next-line-add-newlines t)
 #+END_SRC
 
+** Set $MANPATH, $PATH and exec-path from shell even when started from GUI helpers like dmenu or Spotlight
+
+#+BEGIN_SRC emacs-lisp
+(exec-path-from-shell-initialize)
+#+END_SRC
 
 
+** Closing buffers
+Kill all buffers except the current one
+#+BEGIN_SRC emacs-lisp
+  (defun kill-other-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+#+END_SRC
+
+=dired= will create buffers for every visited folder. This is a helper
+to clear them out once you're done working with those folders.
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun kill-dired-buffers ()
+    "Kill all open dired buffers."
+    (interactive)
+    (mapc (lambda (buffer)
+            (when (eq 'dired-mode (buffer-local-value 'major-mode buffer))
+              (kill-buffer buffer)))
+          (buffer-list)))
+#+END_SRC
 
 * Org mode
 
-Spell checking
+** Spell checking
 
 #+BEGIN_SRC emacs-lisp
-  ;; (add-hook 'org-mode-hook 'turn-on-flyspell)
+  (add-hook 'org-mode-hook 'flyspell-mode)
+  (setq flyspell-sort-corrections nil)
+  (setq flyspell-issue-message-flag nil)
   (setq ispell-program-name "/usr/local/bin/aspell")
 #+END_SRC
 
 
 
-Open org links
+** Open org links
 #+BEGIN_SRC emacs-lisp
   (defun org-force-open-current-window ()
     (interactive)
@@ -381,7 +505,7 @@ Open org links
   (define-key org-mode-map "\C-c\C-o" 'org-open-maybe)
 #+END_SRC
 
-What to open in emacs from org:
+** What to open in emacs from org
 #+BEGIN_SRC emacs-lisp
     ;; (setq org-file-apps '((auto-mode . emacs)
     ;;                       ("\\.mm\\'" . default)
@@ -396,46 +520,37 @@ What to open in emacs from org:
       ;;  (setq org-file-apps '((directory . emacs)))
 #+END_SRC
 
+** Various hooks
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode 'list-of-list-to-matrix())
   (add-hook 'doc-view-mode-hook (lambda () (auto-revert-mode 1)))
+  (add-hook 'org-mode-hook (lambda () (auto-revert-mode 1)))
 #+END_SRC
 
-Better look of latex previews
+** Better look of latex previews
 #+BEGIN_SRC emacs-lisp
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2))
 #+END_SRC
 
-Scroll pdf when taking notes
+
+** Scroll pdf when taking notes
 #+BEGIN_SRC emacs-lisp
-  (defun mrfred-other-doc-view-next-page ()
-      (interactive)
-    (other-window 1)
-    (doc-view-next-page)
-    (other-window 1))
-  (defun mrfred-other-doc-view-prev-page ()
-      (interactive)
-    (other-window 1)
-    (doc-view-previous-page)
-    (other-window 1))
   (add-hook 'org-mode-hook
             (lambda () (local-set-key (kbd "C-M-v") 'mrfred-other-doc-view-next-page)))
   (add-hook 'org-mode-hook
             (lambda () (local-set-key (kbd "C-M-S-v") 'mrfred-other-doc-view-prev-page)))
 #+END_SRC
 
-Kør python kode i orgmode
+** Run python code in org-mode
 
 #+BEGIN_SRC emacs-lisp
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)))
 (setq org-babel-python-command "python3")
-
-
 #+END_SRC
 
-Agenda/todo
+** Agenda/todo
 
 #+BEGIN_SRC emacs-lisp
 ;; set key for agenda
@@ -464,24 +579,25 @@ Agenda/todo
          "* TODO [#A] %?")))
 #+END_SRC
 
-Syntax highlighting in source blocks
+** Syntax highlighting in source blocks
 
 #+BEGIN_SRC emacs-lisp
 (setq org-src-fontify-natively t)
 #+END_SRC
 
-Tab acts correctly in source blocks
+** Tab acts correctly in source blocks
 #+BEGIN_SRC emacs-lisp
 (setq org-src-tab-acts-natively t)
 #+END_SRC
 
-Dont ask to evaluate code
+** Dont ask to evaluate code
 #+BEGIN_SRC emacs-lisp
 (setq org-confirm-babel-evaluate nil)
 #+END_SRC
 
 * Editing settings
 
+** Append to path
 #+BEGIN_SRC emacs-lisp
 (hrs/append-to-path "/usr/local/bin")
 (hrs/append-to-path "~/.local/bin/")
@@ -489,7 +605,7 @@ Dont ask to evaluate code
 (hrs/append-to-path "/Library/TeX/texbin/")
 #+END_SRC
 
-Auto complete, used in elpy
+** Auto complete
 
 #+BEGIN_SRC emacs-lisp
   (require 'auto-complete-config)
@@ -498,14 +614,14 @@ Auto complete, used in elpy
   (setq ac-show-menu-immediately-on-auto-complete t)
 #+END_SRC
 
-Setting environment, primarily for postgresql
+** Setting environment, primarily for postgresql
 #+BEGIN_SRC emacs-lisp
 (setenv "LANG" "en_US.UTF-8")
 (setenv "LC_CTYPE" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 #+END_SRC
 
-
+** Things that should be cleaned up
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist `(("." . "~/.saves")))
   (icomplete-mode 99)
@@ -521,9 +637,14 @@ Setting environment, primarily for postgresql
               ))
 #+END_SRC
 
+** display colors
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook 'rainbow-mode)
+#+END_SRC
 
+* Key binds
 
-* Keybinds
+** Stuff to be cleaned up
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<down>") (kbd "C-u 3 C-v"))
