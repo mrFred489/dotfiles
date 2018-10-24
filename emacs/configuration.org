@@ -669,6 +669,12 @@ to clear them out once you're done working with those folders.
 (add-hook 'prog-mode-hook 'rainbow-mode)
 #+END_SRC
 
+** Automatically pair parenthesis
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+#+END_SRC
+
 * Key binds
 
 ** Stuff to be cleaned up
