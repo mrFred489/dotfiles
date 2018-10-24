@@ -187,6 +187,7 @@
 #+END_SRC
 
 ** Scrolling pdf in other window
+
 #+BEGIN_SRC emacs-lisp
   (defun mrfred-other-doc-view-next-page ()
       (interactive)
@@ -199,6 +200,7 @@
     (doc-view-previous-page)
     (other-window 1))
 #+END_SRC
+
 ** Kattis inserts
 
 #+BEGIN_SRC emacs-lisp
@@ -207,6 +209,12 @@
     (insert "[int(x) for x in input().split()]" ))
 #+END_SRC
 
+
+** Return empty string if nil
+#+BEGIN_SRC emacs-lisp
+  (defun empty-string-if-nil (p)
+    (if p p ""))
+#+END_SRC
 
 * UI preferences
 
@@ -720,10 +728,10 @@ Jedi
               map))
 
   (defun turn-on-kattis-hook ()
-    (cond ((string-match "/Nextcloud/Documents/Programming/kattis/" buffer-file-name)
+    (cond ((string-match "/Nextcloud/Documents/Programming/kattis/" (empty-string-if-nil buffer-file-name))
            (kattis-mode))))
 
-  (add-hook 'text-mode-hook 'turn-on-kattis-hook)
+  (add-hook 'prog-mode-hook 'turn-on-kattis-hook)
 #+END_SRC
 
 * Enable advanced features
