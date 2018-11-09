@@ -622,6 +622,14 @@ to clear them out once you're done working with those folders.
 (setq org-confirm-babel-evaluate nil)
 #+END_SRC
 
+** Course specific
+
+*** Program analysis and verification
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'org-structure-template-alist
+         '("p" "#+BEGIN_EXPORT latex\n\\begin{prooftree}\n?\n\\end{prooftree}\n#+END_EXPORT"
+           "<literal style=\"latex\">\n?\n</literal>"))
+#+END_SRC
 * Editing settings
 
 ** Append to path
@@ -641,6 +649,10 @@ to clear them out once you're done working with those folders.
   (setq ac-show-menu-immediately-on-auto-complete t)
 #+END_SRC
 
+** dabbrev-expand keybinding 
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-k") 'dabbrev-expand)
+#+END_SRC
 ** Setting environment, primarily for postgresql
 #+BEGIN_SRC emacs-lisp
 (setenv "LANG" "en_US.UTF-8")

@@ -7,3 +7,4 @@
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
 [[~/Nextcloud/Documents][Nextcloud]]
 [[~/Nextcloud/Documents/Programming/kattis][kattis]]
+[[~/Nextcloud/Documents/Programming/learnHaskell][haskell]]
