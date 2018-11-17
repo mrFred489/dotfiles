@@ -495,6 +495,12 @@ to clear them out once you're done working with those folders.
           (buffer-list)))
 #+END_SRC
 
+** Duplicate line
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-S-d") '(lambda () (interactive) (beginning-of-line) (kill-whole-line) (yank) (yank) (previous-line)))
+#+END_SRC
+
 * Org mode
 
 ** Spell checking
@@ -627,7 +633,7 @@ to clear them out once you're done working with those folders.
 *** Program analysis and verification
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'org-structure-template-alist
-         '("p" "#+BEGIN_EXPORT latex\n\\begin{prooftree}\n?\n\\end{prooftree}\n#+END_EXPORT"
+         '("p" "#+BEGIN_EXPORT latex\n?\n\\vspace{5mm}\n\\centerline{\\DisplayProof}\n\\vspace{5mm}\n#+END_EXPORT"
            "<literal style=\"latex\">\n?\n</literal>"))
 #+END_SRC
 * Editing settings
@@ -651,7 +657,7 @@ to clear them out once you're done working with those folders.
 
 ** dabbrev-expand keybinding 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-k") 'dabbrev-expand)
+(global-set-key (kbd "M-SPC") 'dabbrev-expand)
 #+END_SRC
 ** Setting environment, primarily for postgresql
 #+BEGIN_SRC emacs-lisp
@@ -692,8 +698,8 @@ to clear them out once you're done working with those folders.
 ** Stuff to be cleaned up
 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<down>") (kbd "C-u 3 C-v"))
-  (global-set-key (kbd "<up>") (kbd "C-u 3 M-v"))
+  (global-set-key (kbd "<down>") (lambda () (interactive) (scroll-up 4)))
+  (global-set-key (kbd "<up>") (lambda () (interactive) (scroll-down 4)))
   (global-set-key (kbd "M-_") 'comment-or-uncomment-region)
   (global-set-key (kbd "C-c m") 'magit-status)
   (defun fal/visit-emacs-config ()
