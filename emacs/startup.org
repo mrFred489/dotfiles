@@ -8,3 +8,4 @@
 [[~/Nextcloud/Documents][Nextcloud]]
 [[~/Nextcloud/Documents/Programming/kattis][kattis]]
 [[~/Nextcloud/Documents/Programming/learnHaskell][haskell]]
+[[~/Nextcloud/Documents/Programming/adventOfCode/2018][AdventOfCode]]

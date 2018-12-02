@@ -34,7 +34,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+F4 exec xkill
 
 # start dmenu (a program launcher)
-#bindsym $mod+space exec dmenu_run
+# bindsym $mod+space exec dmenu_run
 bindsym $mod2+space exec i3-dmenu-desktop
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -70,13 +70,13 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-#bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+# bindsym $mod+d focus child
 
 # default container layout
 workspace_layout default
@@ -99,6 +99,7 @@ set $steam ""
 set $games ""
 set $streams ""
 set $communicate ""
+set $emacs ""
 
 
 # Create named workspaces
@@ -137,6 +138,7 @@ bindsym $mod2+m workspace $music
 bindsym $mod2+s workspace $settings
 bindsym $mod2+v workspace $streams
 bindsym $mod2+c workspace $communicate
+bindsym $mod+c workspace $emacs
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workmain1
@@ -156,6 +158,7 @@ bindsym $mod2+Shift+m move container to workspace $music
 bindsym $mod2+Shift+s move container to workspace $settings
 bindsym $mod2+Shift+v move container to workspace $streams
 bindsym $mod2+Shift+c move container to workspace $communicate
+bindsym $mod+Shift+c move container to workspace $emacs
 
 # Dedicate windows to workspaces
 # Use xprop to get information	
@@ -174,7 +177,7 @@ assign [class="Kingdom Rush"] $games
 assign [class="Gnome-system-monitor"] $settings
 assign [class="Unity-control-center"] $settings
 assign [class="Pavucontrol"] $settings
-assign [class="Rhythmbox"] $workleft4
+assign [class="Rhythmbox"] $music
 assign [class="Spotify"] $music
 assign [instance="Spotify"] $music
 assign [title="Spotify"] $music
@@ -191,7 +194,7 @@ for_window [class="Pavucontrol"] floating enable
 
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+# bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
@@ -234,8 +237,11 @@ mode "open" {
     bindsym q exec "gnome-calculator"; mode "default"
 	bindsym w exec "gedit"; mode "default"
 	bindsym m exec --no-startup-id i3-msg 'exec spotify'; mode "default"
-    bindsym g mode "game"
     bindsym r exec "rhythmbox"; mode "default"
+    bindsym l exec "evince"; mode "default"
+    bindsym c exec "emacs26"; mode "default"
+	bindsym d exec "inkscape"; mode "default"
+    bindsym g mode "game"
     bindsym e mode "execute"
 
     # back to normal: Enter or Escape
@@ -247,11 +253,20 @@ mode "execute" {
 	bindsym l exec "bash /home/frederik/Dropbox/Programming/scripts/wallpaper.sh"; mode "default"
 	bindsym p exec "bash /home/frederik/Dropbox/Programming/scripts/lockScreenToggle.sh"; mode "default"
 	bindsym u exec "bash /home/frederik/Documents/test/testbashinput.sh"; mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 
 mode "game" {
     bindsym t exec "steam steam://rungameid/440"; mode "default"
     bindsym b exec "steam steam://rungameid/250900"; mode "default"
+    
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+
 }    
 
 bindsym $mod+z mode "open"
@@ -268,6 +283,7 @@ mode "emoji" {
      bindsym m exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh frederik.lauridsen@gmail.com"; mode "default"
      bindsym n exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 'Frederik Aarup Lauridsen'"; mode "default"
      bindsym a exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh 'Fuglesangs Alle 144, 1,-3'"; mode "default"
+     bindsym t exec "bash /home/frederik/Dropbox/Programming/scripts/insertToClipboard.sh '27593701'"; mode "default"
 
 
      # back to normal: Enter or Escape
@@ -300,10 +316,10 @@ bindsym $mod+o exec bash /home/frederik/Dropbox/Programming/scripts/toggle_monit
 bindsym Print exec "scrot ~/Pictures/screenshots/%Y-%m-%d\ %H:%M:%S.png"
 bindsym $mod+Print exec "gnome-screenshot -a"
 bindsym $mod+l exec "bash /home/frederik/Dropbox/Programming/scripts/lockscreen.sh"
-bindsym $mod+y fullscreen disable; floating enable; resize set 400 300
+bindsym $mod+y fullscreen disable; floating enable; resize set 633 408
 bindsym $mod+$mod2+Return exec xfce4-terminal -e 'ssh -p 1700 frederik@fredstesting.dk'
 bindsym $mod+i exec xdotool mousedown 3
-
+    
 # Auto start:
 exec --no-startup-id dropbox start
 exec xset s 3600 3600
@@ -322,6 +338,8 @@ exec i3-msg "exec redshift -l 56.2639:9.5018"
 exec --no-startup-id i3-msg "exec thunderbird"
 exec --no-startup-id i3-msg "exec signal-desktop"
 exec --no-startup-id i3-msg exec 'bash /home/frederik/Dropbox/Programming/scripts/removeStartupNotifications.sh'
+exec --no-startup-id nextcloud
+exec --no-startup-id exec workrave
 exec --no-startup-id exec compton -b
 
 
@@ -347,18 +365,21 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        #status_command 	i3status --config ~/.i3status.conf
+    #status_command 	i3status --config ~/.i3status.conf
 	status_command i3blocks
-        position 	top
+    position 	top
 	workspace_buttons yes
-        font pango:Cousine, FontAwesome 8
+    font pango:Cousine, FontAwesome 8
 	tray_output DVI-D-0
-        colors {
-                background $bg-color
-                separator #757575
-                #                  border             background         text
-                focused_workspace  $bg-color          $bg-color          $text-color
-                inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
-                urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
-        }
+    colors {
+        background $bg-color
+        separator #757575
+        #                  border             background         text
+        focused_workspace  $bg-color          $bg-color          $text-color
+        inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+        urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+    }
 }
+
+
+

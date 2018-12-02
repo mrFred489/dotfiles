@@ -63,7 +63,8 @@
       auto-compile 
       flycheck-pycheckers 
       exec-path-from-shell 
-      rainbow-mode ))
+      rainbow-mode 
+      org-bullets))
 #+END_SRC
 
 ** Install dependencies
@@ -136,6 +137,10 @@
 (setq ido-enable-flex-matching t)
 #+END_SRC
 
+** Higher doc-view resolution
+#+BEGIN_SRC emacs-lisp
+(setq doc-view-resolution 300)
+#+END_SRC
 * Set personal information
 
 #+BEGIN_SRC emacs-lisp
@@ -707,6 +712,17 @@ to clear them out once you're done working with those folders.
     (find-file "~/Nextcloud/Documents/dotfiles/emacs/configuration.org"))
 
   (global-set-key (kbd "C-c e") 'fal/visit-emacs-config)
+  (defun fal/visit-emacs-startup ()
+    (interactive)
+    (find-file "~/Nextcloud/Documents/dotfiles/emacs/startup.org"))
+
+  (global-set-key (kbd "C-c s") 'fal/visit-emacs-startup)
+
+  (defun fal/visit-dotfiles ()
+    (interactive)
+    (find-file "~/Nextcloud/Documents/dotfiles"))
+
+  (global-set-key (kbd "C-c d") 'fal/visit-dotfiles)
   (setq ns-right-option-modifier nil)
   ;;(define-key key-translation-map [(meta ?8)] [?\[])
   ;;(define-key key-translation-map [(meta ?9)] [?\]])
@@ -786,5 +802,6 @@ Command for lowercase
   ;;| \alpha + \sum_1 | p_k+2(2) |
 
 #+END_SRC
+
 
 
