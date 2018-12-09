@@ -26,7 +26,7 @@ font pango:System San Fransisco Display 9, FontAwesome 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec gnome-terminal # xfce4-termnal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -82,43 +82,20 @@ bindsym $mod+a focus parent
 workspace_layout default
 
 # set workspace names
-set $workmain1 "1.1"
-set $workmain2 "2.1"
-set $workmain3 "3.1"
-set $workmain4 "4.1"
-set $workmain5 "5.1"
+set $workmain1 "1: "
+set $workmain2 "2"
+set $workmain3 "3"
+set $workmain4 "4"
+set $workmain5 "5"
+set $workmain6 "6"
+set $workmain7 "7"
+set $workmain8 "8"
 set $mail ""
-set $workleft1 "1.2: "
-set $workleft2 "2.2"
-set $workleft3 "3.2"
-set $workleft4 "4.2"
-set $workleft5 "5.2"
 set $music ""
 set $settings ""
-set $steam ""
-set $games ""
-set $streams ""
 set $communicate ""
 set $emacs ""
 
-
-# Create named workspaces
-workspace $workmain1 output DVI-D-0
-workspace $workmain2 output DVI-D-0
-workspace $workmain3 output DVI-D-0
-workspace $workmain4 output DVI-D-0
-workspace $workmain5 output DVI-D-0
-workspace $games output DVI-D-0
-workspace $mail output DVI-D-0
-workspace $steam output DVI-D-0
-workspace $workleft1 output DVI-I-0
-workspace $workleft2 output DVI-I-0
-workspace $workleft3 output DVI-I-0
-workspace $workleft4 output DVI-I-0
-workspace $workleft5 output DVI-I-0
-workspace $music output DVI-I-0
-workspace $settings output DVI-I-0
-workspace $communicate output DVI-I-0
 
 # switch to workspace
 bindsym $mod+1 workspace $workmain1
@@ -126,17 +103,12 @@ bindsym $mod+2 workspace $workmain2
 bindsym $mod+3 workspace $workmain3
 bindsym $mod+4 workspace $workmain4
 bindsym $mod+5 workspace $workmain5
-bindsym $mod+g workspace $games
+bindsym $mod+6 workspace $workmain6
+bindsym $mod+7 workspace $workmain7
+bindsym $mod+8 workspace $workmain8
 bindsym $mod+m workspace $mail
-bindsym $mod+s workspace $steam
-bindsym $mod2+1 workspace $workleft1
-bindsym $mod2+2 workspace $workleft2
-bindsym $mod2+3 workspace $workleft3
-bindsym $mod2+4 workspace $workleft4
-bindsym $mod2+5 workspace $workleft5
+bindsym $mod+s workspace $settings
 bindsym $mod2+m workspace $music
-bindsym $mod2+s workspace $settings
-bindsym $mod2+v workspace $streams
 bindsym $mod2+c workspace $communicate
 bindsym $mod+c workspace $emacs
 
@@ -146,34 +118,18 @@ bindsym $mod+Shift+2 move container to workspace $workmain2
 bindsym $mod+Shift+3 move container to workspace $workmain3
 bindsym $mod+Shift+4 move container to workspace $workmain4
 bindsym $mod+Shift+5 move container to workspace $workmain5
+bindsym $mod+Shift+6 move container to workspace $workmain6
+bindsym $mod+Shift+7 move container to workspace $workmain7
+bindsym $mod+Shift+8 move container to workspace $workmain8
 bindsym $mod+Shift+m move container to workspace $mail
-bindsym $mod+Shift+s move container to workspace $steam
-bindsym $mod+Shift+g move container to workspace $games
-bindsym $mod2+Shift+1 move container to workspace $workleft1
-bindsym $mod2+Shift+2 move container to workspace $workleft2
-bindsym $mod2+Shift+3 move container to workspace $workleft3
-bindsym $mod2+Shift+4 move container to workspace $workleft4
-bindsym $mod2+Shift+5 move container to workspace $workleft5
 bindsym $mod2+Shift+m move container to workspace $music
 bindsym $mod2+Shift+s move container to workspace $settings
-bindsym $mod2+Shift+v move container to workspace $streams
 bindsym $mod2+Shift+c move container to workspace $communicate
 bindsym $mod+Shift+c move container to workspace $emacs
 
 # Dedicate windows to workspaces
 # Use xprop to get information	
 
-assign [class="Steam"] $steam
-assign [title="Steam"] $steam
-assign [instance="Steam"] $steam
-assign [class="hl2_linux"] $games 
-assign [class="csgo_linux"] $games
-assign [class="starbound"] $games
-assign [class="net-minecraft-bootstrap-Bootstrap"] $games
-assign [class="Minecraft"] $games
-assign [class="Binding of Isaac"] $games
-assign [class="Kingdom Rush"] $games
-# assign [class="RocketLeague"] $games
 assign [class="Gnome-system-monitor"] $settings
 assign [class="Unity-control-center"] $settings
 assign [class="Pavucontrol"] $settings
@@ -183,13 +139,10 @@ assign [instance="Spotify"] $music
 assign [title="Spotify"] $music
 for_window [class="Spotify"] move to workspace $music
 assign [class="Thunderbird"] $mail
-assign [class="mpv"] $streams
-assign [class="vlc"] $streams
 assign [class="Signal"] $communicate
 
 for_window [class="com-intellij-rt-execution-application-AppMain"] floating enable
 for_window [class="Pavucontrol"] floating enable
-# for_window [class="RocketLeague"] fullscreen enable
 
 
 
@@ -225,15 +178,41 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+
+## Manual management of external displays
+# Set the shortcuts and what they do
+set $mode_display Ext Screen (h) HDMI ON, (y) HDMI OFF
+mode "$mode_display" {
+    bindsym h exec --no-startup-id xrandr --output HDMI-1 --auto --right-of LVDS1, mode "default"
+    bindsym y exec --no-startup-id xrandr --output HDMI-1 --auto --off, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+set $Locker "bash /home/frederik/work/Programming/scripts/lockscreen.sh && sleep 1" 
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+    
 # open common applications
 
 mode "open" {
 
     bindsym f exec "firefox -not-remote"; mode "default"
-    bindsym s exec steam; mode "default"
     bindsym t exec "thunar"; mode "default"
-	bindsym i exec intellij; mode "default"
-	bindsym p exec pycharm; mode "default"
     bindsym q exec "gnome-calculator"; mode "default"
 	bindsym w exec "gedit"; mode "default"
 	bindsym m exec --no-startup-id i3-msg 'exec spotify'; mode "default"
@@ -241,8 +220,10 @@ mode "open" {
     bindsym l exec "evince"; mode "default"
     bindsym c exec "emacs26"; mode "default"
 	bindsym d exec "inkscape"; mode "default"
-    bindsym g mode "game"
     bindsym e mode "execute"
+    bindsym p mode "$mode_display"
+    bindsym k mode "$mode_system"
+
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -252,22 +233,12 @@ mode "open" {
 mode "execute" {
 	bindsym l exec "bash /home/frederik/work/Programming/scripts/wallpaper.sh"; mode "default"
 	bindsym p exec "bash /home/frederik/work/Programming/scripts/lockScreenToggle.sh"; mode "default"
-	bindsym u exec "bash /home/frederik/Documents/test/testbashinput.sh"; mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
-mode "game" {
-    bindsym t exec "steam steam://rungameid/440"; mode "default"
-    bindsym b exec "steam steam://rungameid/250900"; mode "default"
     
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-
-}    
 
 bindsym $mod+z mode "open"
 
@@ -293,18 +264,12 @@ mode "emoji" {
 
 bindsym $mod+x mode "emoji"
 
-mode "math" {
-     bindsym l exec "bash /home/frederik/work/Programming/scripts/insertToClipboard.sh Λ"; mode "default"
-     bindsym i exec "bash /home/frederik/work/Programming/scripts/insertToClipboard.sh ∈"; mode "default"
-     bindsym s exec "bash /home/frederik/work/Programming/scripts/insertToClipboard.sh Σ"; mode "default"
-}
-
-bindsym $mod3+m mode "math"
 
 # to get keynames interactively, run xev in terminal
 # Custom shortcuts:
-bindsym XF86AudioRaiseVolume exec "amixer -q set Master 2%+ unmute; pkill -RTMIN+10 i3blocks"
-bindsym XF86AudioLowerVolume exec "amixer -q set Master 2%- unmute; pkill -RTMIN+10 i3blocks"
+bindsym XF86AudioRaiseVolume exec "amixer -q -D pulse set Master 2%+ unmute; pkill -RTMIN+10 i3blocks"
+bindsym XF86AudioLowerVolume exec "amixer -q -D pulse set Master 2%- unmute; pkill -RTMIN+10 i3blocks"
+bindsym XF86AudioMute exec amixer -D pulse set Master 1+ toggle
 bindsym XF86AudioPlay exec playerctl -p spotify play-pause
 bindsym XF86AudioPause exec playerctl -p spotify play-pause
 bindsym XF86AudioNext exec playerctl -p spotify next
@@ -314,22 +279,18 @@ bindsym $mod+Shift+k exec /home/frederik/work/Programming/scripts/openMySite.sh
 bindsym $mod+ae move workspace to output right
 bindsym $mod+o exec bash /home/frederik/work/Programming/scripts/toggle_monitor_rotation.sh
 bindsym Print exec "scrot ~/Pictures/screenshots/%Y-%m-%d\ %H:%M:%S.png"
-bindsym $mod+Print exec "gnome-screenshot -a"
+bindsym $mod+XF86Search exec "gnome-screenshot -a"
 bindsym $mod+l exec "bash /home/frederik/work/Programming/scripts/lockscreen.sh"
 bindsym $mod+y fullscreen disable; floating enable; resize set 633 408
 bindsym $mod+$mod2+Return exec xfce4-terminal -e 'ssh -p 1700 frederik@fredstesting.dk'
-bindsym $mod+i exec xdotool mousedown 3
+
     
 # Auto start:
-exec --no-startup-id dropbox start
+# exec --no-startup-id dropbox start
 exec xset s 3600 3600
 exec xautolock -time 15 -notify 10 -corners 00-0 -locker "bash /home/frederik/work/Programming/scripts/lockscreen.sh"
-exec --no-startup-id i3-msg 'exec gnome-system-monitor'
-exec --no-startup-id i3-msg 'exec pavucontrol'
-exec --no-startup-id i3-msg 'exec /home/frederik/work/Programming/scripts/open-settings.sh'
 # exec --no-startup-id i3-msg 'exec spotify'
-# exec --no-startup-id i3-msg 'workspace $workleft2; exec i3-sensible-terminal'
-exec --no-startup-id i3-msg 'workspace $workleft1; exec firefox'
+exec --no-startup-id i3-msg 'workspace $workmain1; exec firefox'
 exec --no-startup-id i3-msg exec 'bash /home/frederik/work/Programming/scripts/wallpaper.sh'
 exec --no-startup-id i3-msg exec 'xmodmap ~/.Xmodmap'
 exec i3-msg "exec xrandr --output DVI-D-0 --primary"
@@ -370,7 +331,7 @@ bar {
     position 	top
 	workspace_buttons yes
     font pango:Cousine, FontAwesome 8
-	tray_output DVI-D-0
+    tray_output eDP-1
     colors {
         background $bg-color
         separator #757575

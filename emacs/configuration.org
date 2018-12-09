@@ -64,7 +64,8 @@
       flycheck-pycheckers 
       exec-path-from-shell 
       rainbow-mode 
-      org-bullets))
+      org-bullets
+      move-text))
 #+END_SRC
 
 ** Install dependencies
@@ -138,8 +139,10 @@
 #+END_SRC
 
 ** Higher doc-view resolution
+
+Apparently makes emacs crash when refreshing the pdf.
 #+BEGIN_SRC emacs-lisp
-(setq doc-view-resolution 300)
+;; (setq doc-view-resolution 300)
 #+END_SRC
 * Set personal information
 
@@ -506,6 +509,20 @@ to clear them out once you're done working with those folders.
   (global-set-key (kbd "C-S-d") '(lambda () (interactive) (beginning-of-line) (kill-whole-line) (yank) (yank) (previous-line)))
 #+END_SRC
 
+** Move line/region
+
+#+BEGIN_SRC emacs-lisp
+  (require 'move-text)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-S-p") 'move-text-up)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-S-n") 'move-text-down)
+#+END_SRC
+
 * Org mode
 
 ** Spell checking
@@ -613,7 +630,7 @@ to clear them out once you're done working with those folders.
 ;;capture todo items using C-c c t
 (define-key global-map (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(("t" "todo" entry (file+headline "~/Dropbox/dotfiles/emacs/todo.org" "Tasks")
+      '(("t" "todo" entry (file+headline "~/work/dotfiles/emacs/todo.org" "Tasks")
          "* TODO [#A] %?")))
 #+END_SRC
 
@@ -696,6 +713,11 @@ to clear them out once you're done working with those folders.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'prog-mode-hook 'electric-pair-mode)
+#+END_SRC
+
+** Extra undo keybind for american keyboard
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-?") 'undo)
 #+END_SRC
 
 * Key binds

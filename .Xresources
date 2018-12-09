@@ -1,0 +1,52 @@
+!################################
+!#                         _    #
+!#                        | |   #
+!#  _   _ _ ____  ____   _| |_  #
+!# | | | | '__\ \/ /\ \ / / __| #
+!# | |_| | |   >  <  \ V /| |_  #
+!#  \__,_|_|  /_/\_\  \_/  \__| #
+!#                              #
+!################################
+
+!# Real transparency         -> needs composite manager
+!URxvt.depth:                32
+!URxvt.background:           rgba:0000/0000/0200/cfff
+
+!# Fake transparency
+URxvt.transparent:          true
+URxvt.shading:              0
+
+URxvt.tintColor:            White
+URxvt.saveLines:            9000000
+URxvt.foreground:           Grey
+
+!# Fonts                     For Powerlinefonts: https://github.com/powerline/fonts (Arch linux -> AUR)
+!#URxvt.font:                 xft:Droid Sans Mono:pixelsize=18:antialias=true:hinting=true
+!#URxvt.boldFont:             xft:Droid Sans Mono:bold:pixelsize=18:antialias=true:hinting=true
+!#URxvt.tabbed.font:          xft:Droid Sans Mono:pixelsize=18:antialias=true:hinting=true
+URxvt.font:                 xft:Hack:pixelsize=15:antialias=true:hinting=false
+URxvt.boldFont:             xft:Hackb, Bold:bold:pixelsize=14:antialias=true:hinting=true
+URxvt.tabbed.font:          xft:Hack:pixelsize=14:antialias=true:hinting=true
+
+!# Misc configurations
+URxvt.colorUL:                  #4682B4
+URxvt.tabbed.saveLines:         1000
+URxvt.tabbed.scrollBar:         false
+URxvt.tabbed.tabbar-fg:         3
+URxvt.tabbed.tabbar-bg:         0
+URxvt.tabbed.tab-fg:            0
+URxvt.tabbed.tab-bg:            1
+URxvt.tabbed.secondaryScroll:   true
+URxvt.inheritPixmap:            true 
+
+!# Scroll behavior, don't scroll with output
+URxvt.scrollBar:            false
+URxvt.secondaryScroll:      true
+URxvt.scrollTtyOutput:      false
+URxvt.scrollWithBuffer:     true
+URxvt.scrollTtyKeypress:    true
+
+!# Clickable urls
+URxvt.perl-ext-common:      default,matcher
+URxvt.url-launcher:         /usr/bin/xdg-open
+URxvt.matcher.button:       1
