@@ -26,7 +26,7 @@ font pango:System San Fransisco Display 9, FontAwesome 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec gnome-terminal # xfce4-termnal
+bindsym $mod+Return exec xfce4-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -53,30 +53,40 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
-bindsym $mod+h split h
+mode "configure" {# split in horizontal orientation
+    bindsym h split h, mode "default"
+    
+    # split in vertical orientation
+    bindsym v split v, mode "default"
+    
+    # enter fullscreen mode for the focused container
+    bindsym f fullscreen, mode "default"
+    
+    # change container layout (stacked, tabbed, toggle split)
+    bindsym w layout tabbed, mode "default"
+    bindsym e layout toggle split, mode "default"
+    
+    # toggle tiling / floating
+    bindsym Shift+space floating toggle, mode "default"
+    
+    # change focus between tiling / floating windows
+    bindsym space focus mode_toggle, mode "default"
+    
+    # focus the parent container
+    bindsym a focus parent, mode "default"
+    
+    # focus the child container
+    bindsym d focus child, mode "default"
+    
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 
-# split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+c mode "configure"
 
-# enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
 
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-bindsym $mod+a focus parent
-
-# focus the child container
-# bindsym $mod+d focus child
 
 # default container layout
 workspace_layout default
@@ -93,7 +103,6 @@ set $workmain8 "8"
 set $mail ""
 set $music ""
 set $settings ""
-set $communicate ""
 set $emacs ""
 
 
@@ -109,8 +118,7 @@ bindsym $mod+8 workspace $workmain8
 bindsym $mod+m workspace $mail
 bindsym $mod+s workspace $settings
 bindsym $mod2+m workspace $music
-bindsym $mod2+c workspace $communicate
-bindsym $mod+c workspace $emacs
+bindsym $mod+w workspace $emacs
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workmain1
@@ -124,8 +132,7 @@ bindsym $mod+Shift+8 move container to workspace $workmain8
 bindsym $mod+Shift+m move container to workspace $mail
 bindsym $mod2+Shift+m move container to workspace $music
 bindsym $mod2+Shift+s move container to workspace $settings
-bindsym $mod2+Shift+c move container to workspace $communicate
-bindsym $mod+Shift+c move container to workspace $emacs
+bindsym $mod+Shift+w move container to workspace $emacs
 
 # Dedicate windows to workspaces
 # Use xprop to get information	
@@ -139,10 +146,11 @@ assign [instance="Spotify"] $music
 assign [title="Spotify"] $music
 for_window [class="Spotify"] move to workspace $music
 assign [class="Thunderbird"] $mail
-assign [class="Signal"] $communicate
 
 for_window [class="com-intellij-rt-execution-application-AppMain"] floating enable
 for_window [class="Pavucontrol"] floating enable
+for_window [class="Gnome-calculator"] floating enable
+for_window [class="gnome-calculator"] floating enable
 
 
 
@@ -181,17 +189,20 @@ bindsym $mod+r mode "resize"
 
 ## Manual management of external displays
 # Set the shortcuts and what they do
-set $mode_display Ext Screen (h) HDMI ON, (y) HDMI OFF
+set $mode_display Ext Screen (r) HDMI ON RIGHT, (l) HDMI ON LEFT,(a) HDMI ABOVE, (d) HDMI DUPLICATE, (o) HDMI OFF
 mode "$mode_display" {
-    bindsym h exec --no-startup-id xrandr --output HDMI-1 --auto --right-of LVDS1, mode "default"
-    bindsym y exec --no-startup-id xrandr --output HDMI-1 --auto --off, mode "default"
+    bindsym d exec --no-startup-id xrandr --output DP-1 --auto, mode "default"
+    bindsym r exec --no-startup-id xrandr --output DP-1 --auto --right-of eDP-1, mode "default"
+    bindsym l exec --no-startup-id xrandr --output DP-1 --auto --left-of eDP-1, mode "default"
+    bindsym a exec --no-startup-id xrandr --output DP-1 --auto --above eDP-1, mode "default"
+    bindsym o exec --no-startup-id xrandr --output DP-1 --auto --off, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-set $Locker "bash /home/frederik/work/Programming/scripts/lockscreen.sh && sleep 1" 
+set $Locker bash /home/frederik/work/Programming/scripts/lockscreen.sh && sleep 1 
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -211,15 +222,15 @@ mode "$mode_system" {
 
 mode "open" {
 
-    bindsym f exec "firefox -not-remote"; mode "default"
-    bindsym t exec "thunar"; mode "default"
-    bindsym q exec "gnome-calculator"; mode "default"
-	bindsym w exec "gedit"; mode "default"
+    bindsym f exec --no-startup-id "firefox -not-remote"; mode "default"
+    bindsym t exec --no-startup-id "thunar"; mode "default"
+    bindsym q exec --no-startup-id "gnome-calculator"; mode "default"
+	bindsym w exec --no-startup-id "gedit"; mode "default"
 	bindsym m exec --no-startup-id i3-msg 'exec spotify'; mode "default"
-    bindsym r exec "rhythmbox"; mode "default"
-    bindsym l exec "evince"; mode "default"
-    bindsym c exec "emacs26"; mode "default"
-	bindsym d exec "inkscape"; mode "default"
+    bindsym r exec --no-startup-id "rhythmbox"; mode "default"
+    bindsym l exec --no-startup-id "evince"; mode "default"
+    bindsym c exec --no-startup-id "bash /home/frederik/work/Programming/scripts/openemacs.sh"; mode "default"
+	bindsym d exec --no-startup-id "inkscape"; mode "default"
     bindsym e mode "execute"
     bindsym p mode "$mode_display"
     bindsym k mode "$mode_system"
@@ -231,7 +242,7 @@ mode "open" {
 }
 
 mode "execute" {
-	bindsym l exec "bash /home/frederik/work/Programming/scripts/wallpaper.sh"; mode "default"
+	bindsym l exec --no-startup-id "bash /home/frederik/work/Programming/scripts/wallpaper.sh"; mode "default"
 	bindsym p exec "bash /home/frederik/work/Programming/scripts/lockScreenToggle.sh"; mode "default"
 
     # back to normal: Enter or Escape
@@ -287,21 +298,21 @@ bindsym $mod+$mod2+Return exec xfce4-terminal -e 'ssh -p 1700 frederik@fredstest
     
 # Auto start:
 # exec --no-startup-id dropbox start
-exec xset s 3600 3600
-exec xautolock -time 15 -notify 10 -corners 00-0 -locker "bash /home/frederik/work/Programming/scripts/lockscreen.sh"
+exec --no-startup-id xset s 3600 3600
+exec --no-startup-id xautolock -time 15 -notify 10 -corners 00-0 -locker "bash /home/frederik/work/Programming/scripts/lockscreen.sh"
 # exec --no-startup-id i3-msg 'exec spotify'
 exec --no-startup-id i3-msg 'workspace $workmain1; exec firefox'
-exec --no-startup-id i3-msg exec 'bash /home/frederik/work/Programming/scripts/wallpaper.sh'
-exec --no-startup-id i3-msg exec 'xmodmap ~/.Xmodmap'
-exec i3-msg "exec xrandr --output DVI-D-0 --primary"
-exec i3-msg "exec redshift -l 56.2639:9.5018"
+exec --no-startup-id exec "bash /home/frederik/work/Programming/scripts/wallpaper.sh"
+exec --no-startup-id exec 'xmodmap ~/.Xmodmap'
+# exec i3-msg "exec xrandr --output DVI-D-0 --primary"
+exec --no-startup-id exec redshift -l 56.2639:9.5018
 # exec --no-startup-id i3-msg exec "bash /home/frederik/work/Programming/scripts/monitor-orientation.sh"
-exec --no-startup-id i3-msg "exec thunderbird"
-exec --no-startup-id i3-msg "exec signal-desktop"
-exec --no-startup-id i3-msg exec 'bash /home/frederik/work/Programming/scripts/removeStartupNotifications.sh'
+exec --no-startup-id exec thunderbird
+exec --no-startup-id exec signal-desktop
+exec --no-startup-id exec 'bash /home/frederik/work/Programming/scripts/removeStartupNotifications.sh'
 exec --no-startup-id nextcloud
-exec --no-startup-id exec workrave
-exec --no-startup-id exec compton -b
+exec --no-startup-id xss-lock -- ~/work/Programming/scripts/lockscreen.sh
+# exec --no-startup-id exec compton -b
 
 
 # Set colors of i3

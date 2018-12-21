@@ -53,30 +53,37 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
-bindsym $mod+h split h
+mode "configure" {# split in horizontal orientation
+    bindsym h split h, mode "default"
+    
+    # split in vertical orientation
+    bindsym v split v, mode "default"
+    
+    # enter fullscreen mode for the focused container
+    bindsym f fullscreen, mode "default"
+    
+    # change container layout (stacked, tabbed, toggle split)
+    bindsym w layout tabbed, mode "default"
+    bindsym e layout toggle split, mode "default"
+    
+    # toggle tiling / floating
+    bindsym Shift+space floating toggle, mode "default"
+    
+    # change focus between tiling / floating windows
+    bindsym space focus mode_toggle, mode "default"
+    
+    # focus the parent container
+    bindsym a focus parent, mode "default"
+    
+    # focus the child container
+    bindsym d focus child, mode "default"
+    
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 
-# split in vertical orientation
-bindsym $mod+v split v
-
-# enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-bindsym $mod+a focus parent
-
-# focus the child container
-# bindsym $mod+d focus child
+bindsym $mod+c mode "configure"
 
 # default container layout
 workspace_layout default
@@ -138,7 +145,7 @@ bindsym $mod2+m workspace $music
 bindsym $mod2+s workspace $settings
 bindsym $mod2+v workspace $streams
 bindsym $mod2+c workspace $communicate
-bindsym $mod+c workspace $emacs
+bindsym $mod+w workspace $emacs
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workmain1
@@ -158,7 +165,7 @@ bindsym $mod2+Shift+m move container to workspace $music
 bindsym $mod2+Shift+s move container to workspace $settings
 bindsym $mod2+Shift+v move container to workspace $streams
 bindsym $mod2+Shift+c move container to workspace $communicate
-bindsym $mod+Shift+c move container to workspace $emacs
+bindsym $mod+Shift+w move container to workspace $emacs
 
 # Dedicate windows to workspaces
 # Use xprop to get information	
@@ -239,7 +246,7 @@ mode "open" {
 	bindsym m exec --no-startup-id i3-msg 'exec spotify'; mode "default"
     bindsym r exec "rhythmbox"; mode "default"
     bindsym l exec "evince"; mode "default"
-    bindsym c exec "emacs26"; mode "default"
+    bindsym c exec "bash /home/frederik/work/Programming/scripts/openemacs.sh"; mode "default"
 	bindsym d exec "inkscape"; mode "default"
     bindsym g mode "game"
     bindsym e mode "execute"

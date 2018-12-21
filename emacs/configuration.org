@@ -45,25 +45,25 @@
 ** Required packages
 
 #+BEGIN_SRC emacs-lisp
-  (defvar local-packages 
-    '(auto-complete 
-      elpy 
-      flycheck 
-      jedi 
-      magit 
-      projectile 
+  (defvar local-packages
+    '(auto-complete
+      elpy
+      flycheck
+      jedi
+      magit
+      projectile
       epc
-      diff-hl 
-      latex-pretty-symbols 
-      poet-theme 
-      pretty-symbols 
+      diff-hl
+      latex-pretty-symbols
+      poet-theme
+      pretty-symbols
       rainbow-delimiters
-      ac-ispell 
-      auctex 
-      auto-compile 
-      flycheck-pycheckers 
-      exec-path-from-shell 
-      rainbow-mode 
+      ac-ispell
+      auctex
+      auto-compile
+      flycheck-pycheckers
+      exec-path-from-shell
+      rainbow-mode
       org-bullets
       move-text))
 #+END_SRC
@@ -115,7 +115,7 @@
 (setq gc-cons-threshold 20000000)
 #+END_SRC
 
-** When opening files, always follow symlinks 
+** When opening files, always follow symlinks
 #+BEGIN_SRC emacs-lisp
 (setq vc-follow-symlinks t)
 #+END_SRC
@@ -140,9 +140,9 @@
 
 ** Higher doc-view resolution
 
-Apparently makes emacs crash when refreshing the pdf.
+Apparently makes emacs crash when refreshing the pdf if set to 300.
 #+BEGIN_SRC emacs-lisp
-;; (setq doc-view-resolution 300)
+ (setq doc-view-resolution 200)
 #+END_SRC
 * Set personal information
 
@@ -186,8 +186,8 @@ Apparently makes emacs crash when refreshing the pdf.
 #+BEGIN_SRC emacs-lisp
   (defun list-of-list-to-matrix (b e)
     (interactive "r")
-    (replace-string "[" "" nil b (+ b 3))  
-    (replace-string "]" "" nil (- e 4) e)  
+    (replace-string "[" "" nil b (+ b 3))
+    (replace-string "]" "" nil (- e 4) e)
     (replace-string " " "" nil b e)
     (replace-string "],[" "\\\\\n" nil b e)
     (replace-string "," " & " nil b e)
@@ -213,7 +213,7 @@ Apparently makes emacs crash when refreshing the pdf.
 
 #+BEGIN_SRC emacs-lisp
   (defun get-ints ()
-    (interactive) 
+    (interactive)
     (insert "[int(x) for x in input().split()]" ))
 #+END_SRC
 
@@ -227,13 +227,33 @@ Apparently makes emacs crash when refreshing the pdf.
 * UI preferences
 
 #+BEGIN_SRC emacs-lisp
-  (when window-system
-    (scroll-bar-mode -1))
+  (defun my-frame-tweaks (&optional frame)
+    "My personal frame tweaks."
+    (unless frame
+      (setq frame (selected-frame)))
+    (when frame
+      (with-selected-frame frame
+        (when (display-graphic-p)
+          (load-theme 'poet t)
+          (when window-system
+            (scroll-bar-mode -1)
+            (tool-bar-mode 0)
+            (menu-bar-mode 1)))))) ;; (set-face-font 'default "dejavu sans mono-15")
+
+  ;; For the case that the init file runs after the frame has been created
+  ;; Call of emacs without --daemon option. emacsclient -e '(save-buffers-kill-emacs)'
+  (my-frame-tweaks)
+  ;; For the case that the init file runs before the frame is created.
+  ;; Call of emacs with --daemon option.
+  (add-hook 'after-make-frame-functions #'my-frame-tweaks t)
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp
+
   (add-hook 'text-mode-hook
             (lambda ()
               (variable-pitch-mode 1)))
-  (tool-bar-mode 0)
-  (menu-bar-mode 1)
   (show-paren-mode 1)
   (setq show-paren-delay 0)
   (setq show-paren-when-point-inside-paren t)
@@ -458,7 +478,7 @@ Encode some characters
 
 ** Setting the ls arguments for dired
 #+BEGIN_SRC emacs-lisp
-(setq-default dired-listing-switches "-lhvA")
+(setq-default dired-listing-switches "-lthA")
 #+END_SRC
 
 ** Projectile
@@ -523,6 +543,13 @@ to clear them out once you're done working with those folders.
   (global-set-key (kbd "C-S-n") 'move-text-down)
 #+END_SRC
 
+** Keybinds for marking
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-æ") 'mark-word)
+  (global-set-key (kbd "C-ø") 'mark-sexp)
+  (global-set-key (kbd "C-å") 'mark-defun)
+#+END_SRC
 * Org mode
 
 ** Spell checking
@@ -609,7 +636,7 @@ to clear them out once you're done working with those folders.
 
 #+BEGIN_SRC emacs-lisp
 ;; set key for agenda
-(global-set-key (kbd "C-c a") 'org-agenda)
+;; (global-set-key (kbd "C-c a") 'org-agenda)
 
 ;;file to save todo items
 (setq org-agenda-files (quote ("~/Dropbox/dotfiles/emacs/todo.org")))
@@ -628,7 +655,7 @@ to clear them out once you're done working with those folders.
 (setq org-agenda-window-setup (quote current-window))
 
 ;;capture todo items using C-c c t
-(define-key global-map (kbd "C-c c") 'org-capture)
+;; (define-key global-map (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
       '(("t" "todo" entry (file+headline "~/work/dotfiles/emacs/todo.org" "Tasks")
          "* TODO [#A] %?")))
@@ -677,7 +704,7 @@ to clear them out once you're done working with those folders.
   (setq ac-show-menu-immediately-on-auto-complete t)
 #+END_SRC
 
-** dabbrev-expand keybinding 
+** dabbrev-expand keybinding
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-SPC") 'dabbrev-expand)
 #+END_SRC
@@ -699,7 +726,7 @@ to clear them out once you're done working with those folders.
   (setq linum-format "%d ")
   (add-hook 'text-mode-hook 'visual-line-mode)
   (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
-  (add-hook 'prog-mode-hook 
+  (add-hook 'prog-mode-hook
             (lambda ()
               ))
 #+END_SRC
@@ -740,17 +767,32 @@ to clear them out once you're done working with those folders.
 
   (global-set-key (kbd "C-c s") 'fal/visit-emacs-startup)
 
+
   (defun fal/visit-dotfiles ()
     (interactive)
     (find-file "~/Nextcloud/Documents/dotfiles"))
 
   (global-set-key (kbd "C-c d") 'fal/visit-dotfiles)
+
+  (defun fal/open-from-dir (d)
+    (interactive)
+    (let ((l (pwd)))
+    (cd d)
+    (call-interactively 'find-file)
+    (cd l)))
+
+  (defun fal/visit-home ()
+    (interactive)
+    (fal/open-from-dir "~/"))
+
+  (global-set-key (kbd "C-c h") 'fal/visit-home)
+
   (setq ns-right-option-modifier nil)
   ;;(define-key key-translation-map [(meta ?8)] [?\[])
   ;;(define-key key-translation-map [(meta ?9)] [?\]])
 #+END_SRC
 
-Jedi 
+Jedi
 
 #+BEGIN_SRC emacs-lisp
   (defun jedi-config:setup-keys ()
@@ -766,12 +808,16 @@ Jedi
 (setq python-shell-interpreter "python3")
 #+END_SRC
 
+** Don't suspend frame
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key (kbd "C-z"))
+#+END_SRC
 * Dependencies
 - rainbow-delimiters
 - paredit
 - flycheck
   - flycheck-pyheck
-- elpy 
+- elpy
   - rope
   - jedi
   - flake8
@@ -805,12 +851,9 @@ Command for lowercase
 
 * Variables and themes
 
-#+BEGIN_SRC emacs-lisp
-  (load-theme 'poet t)
-#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  
+
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
@@ -824,6 +867,3 @@ Command for lowercase
   ;;| \alpha + \sum_1 | p_k+2(2) |
 
 #+END_SRC
-
-
-

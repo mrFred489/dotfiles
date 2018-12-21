@@ -96,6 +96,17 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+get_creation_time() {
+
+  for target in "${@}"; do
+    inode=$(stat -c %i "${target}")
+    fs=$(df  --output=source "${target}"  | tail -1)
+    crtime=$(sudo debugfs -R 'stat <'"${inode}"'>' "${fs}" 2>/dev/null | 
+    grep -oP 'crtime.*--\s*\K.*')
+    printf "%s\t%s\n" "${target}" "${crtime}"
+  done
+    }
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -176,10 +187,10 @@ cdl(){
 
 go(){
     if [ $1 == "home" ]; then
-	ssh -p 1700 frederik@frederikal.dk
+	    ssh -p 1700 frederik@frederikal.dk
     else if [  $1 == "fresh" ]; then
-	ssh mrfred@fh.cs.au.dk
-    fi
+	         ssh mrfred@fh.cs.au.dk
+         fi
     fi
 }
 
@@ -190,6 +201,8 @@ export LANG="en_DK.UTF-8"
 complete -W "$(cat ~/.scriptstuff/livenames.txt)" live
 
 complete -W "Pervasive Concurrency MatMod SoftArc" d
+
+
 
 # Add bash aliases.
 if [ -f ~/.bash_aliases ]; then
