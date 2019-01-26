@@ -196,6 +196,7 @@ assign [class="Signal"] $communicate
 
 for_window [class="com-intellij-rt-execution-application-AppMain"] floating enable
 for_window [class="Pavucontrol"] floating enable
+for_window [title="*Emacs Anywhere*"] floating enable
 # for_window [class="RocketLeague"] fullscreen enable
 
 
@@ -325,7 +326,7 @@ bindsym $mod+Print exec "gnome-screenshot -a"
 bindsym $mod+l exec "bash /home/frederik/work/Programming/scripts/lockscreen.sh"
 bindsym $mod+y fullscreen disable; floating enable; resize set 633 408
 bindsym $mod+$mod2+Return exec xfce4-terminal -e 'ssh -p 1700 frederik@fredstesting.dk'
-bindsym $mod+i exec xdotool mousedown 3
+bindsym $mod+i exec ~/.emacs_anywhere/bin/run # && i3-msg "[id=$(xdotool getactivewindow)] floating enable"
     
 # Auto start:
 exec --no-startup-id dropbox start

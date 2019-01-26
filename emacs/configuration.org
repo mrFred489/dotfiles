@@ -607,6 +607,8 @@ to clear them out once you're done working with those folders.
   (add-hook 'org-mode 'list-of-list-to-matrix())
   (add-hook 'doc-view-mode-hook (lambda () (auto-revert-mode 1)))
   (add-hook 'org-mode-hook (lambda () (auto-revert-mode 1)))
+  (add-hook 'org-mode-hook (lambda () (add-to-list 'insert-pair-alist (list ?\$ ?\$))))
+  (add-hook 'org-mode-hook (lambda () (add-to-list 'electric-pair-pairs (list ?\$ ?\$))))
 #+END_SRC
 
 ** Better look of latex previews

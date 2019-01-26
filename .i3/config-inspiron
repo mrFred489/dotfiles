@@ -146,6 +146,7 @@ assign [instance="Spotify"] $music
 assign [title="Spotify"] $music
 for_window [class="Spotify"] move to workspace $music
 assign [class="Thunderbird"] $mail
+assign [class="Evolution"] $mail
 
 for_window [class="com-intellij-rt-execution-application-AppMain"] floating enable
 for_window [class="Pavucontrol"] floating enable
@@ -191,7 +192,7 @@ bindsym $mod+r mode "resize"
 # Set the shortcuts and what they do
 set $mode_display Ext Screen (r) HDMI ON RIGHT, (l) HDMI ON LEFT,(a) HDMI ABOVE, (d) HDMI DUPLICATE, (o) HDMI OFF
 mode "$mode_display" {
-    bindsym d exec --no-startup-id xrandr --output DP-1 --auto, mode "default"
+    bindsym d exec --no-startup-id xrandr --output DP-1 --auto --same-as eDP-1, mode "default"
     bindsym r exec --no-startup-id xrandr --output DP-1 --auto --right-of eDP-1, mode "default"
     bindsym l exec --no-startup-id xrandr --output DP-1 --auto --left-of eDP-1, mode "default"
     bindsym a exec --no-startup-id xrandr --output DP-1 --auto --above eDP-1, mode "default"
@@ -226,7 +227,7 @@ mode "open" {
     bindsym t exec --no-startup-id "thunar"; mode "default"
     bindsym q exec --no-startup-id "gnome-calculator"; mode "default"
 	bindsym w exec --no-startup-id "gedit"; mode "default"
-	bindsym m exec --no-startup-id i3-msg 'exec spotify'; mode "default"
+	bindsym m exec --no-startup-id i3-msg 'exec --no-startup-id spotify'; mode "default"
     bindsym r exec --no-startup-id "rhythmbox"; mode "default"
     bindsym l exec --no-startup-id "evince"; mode "default"
     bindsym c exec --no-startup-id "bash /home/frederik/work/Programming/scripts/openemacs.sh"; mode "default"
@@ -307,7 +308,8 @@ exec --no-startup-id exec 'xmodmap ~/.Xmodmap'
 # exec i3-msg "exec xrandr --output DVI-D-0 --primary"
 exec --no-startup-id exec redshift -l 56.2639:9.5018
 # exec --no-startup-id i3-msg exec "bash /home/frederik/work/Programming/scripts/monitor-orientation.sh"
-exec --no-startup-id exec thunderbird
+# exec --no-startup-id exec thunderbird
+exec --no-startup-id exec evolution
 exec --no-startup-id exec signal-desktop
 exec --no-startup-id exec 'bash /home/frederik/work/Programming/scripts/removeStartupNotifications.sh'
 exec --no-startup-id nextcloud
