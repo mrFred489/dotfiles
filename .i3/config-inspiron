@@ -310,7 +310,6 @@ exec --no-startup-id exec redshift -l 56.2639:9.5018
 # exec --no-startup-id i3-msg exec "bash /home/frederik/work/Programming/scripts/monitor-orientation.sh"
 # exec --no-startup-id exec thunderbird
 exec --no-startup-id exec evolution
-exec --no-startup-id exec signal-desktop
 exec --no-startup-id exec 'bash /home/frederik/work/Programming/scripts/removeStartupNotifications.sh'
 exec --no-startup-id nextcloud
 exec --no-startup-id xss-lock -- ~/work/Programming/scripts/lockscreen.sh

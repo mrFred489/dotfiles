@@ -749,6 +749,13 @@ to clear them out once you're done working with those folders.
 (global-set-key (kbd "C-?") 'undo)
 #+END_SRC
 
+** Compile command when editing latex
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'latex-mode-hook
+            (lambda ()
+              (set (make-local-variable 'compile-command) (format "pdflatex -interaction nonstopmode %s" (file-name-nondirectory buffer-file-name)))))
+
+#+END_SRC
 * Key binds
 
 ** Stuff to be cleaned up

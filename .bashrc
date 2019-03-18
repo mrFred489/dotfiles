@@ -202,7 +202,7 @@ complete -W "$(cat ~/.scriptstuff/livenames.txt)" live
 
 complete -W "Pervasive Concurrency MatMod SoftArc" d
 
-
+alias e="bash ~/work/Programming/scripts/openemacs.sh"
 
 # Add bash aliases.
 if [ -f ~/.bash_aliases ]; then
