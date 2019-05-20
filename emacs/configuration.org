@@ -68,6 +68,8 @@
       move-text))
 #+END_SRC
 
+maybe ac-html, ac-html-csswatcher
+
 ** Install dependencies
 
 #+BEGIN_SRC emacs-lisp
@@ -91,7 +93,7 @@
 
 ** Don't accidentally close everything
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
+  (global-set-key (kbd "C-x r q") 'save-buffers-kill-emacs)
   (global-set-key (kbd "C-x C-c") 'delete-frame)
 #+END_SRC
 
@@ -226,6 +228,7 @@ Apparently makes emacs crash when refreshing the pdf if set to 300.
 
 * UI preferences
 
+** Tweak frame when it appears
 #+BEGIN_SRC emacs-lisp
   (defun my-frame-tweaks (&optional frame)
     "My personal frame tweaks."
@@ -248,9 +251,8 @@ Apparently makes emacs crash when refreshing the pdf if set to 300.
   (add-hook 'after-make-frame-functions #'my-frame-tweaks t)
 #+END_SRC
 
-
+** Better parentheses
 #+BEGIN_SRC emacs-lisp
-
   (add-hook 'text-mode-hook
             (lambda ()
               (variable-pitch-mode 1)))
@@ -264,7 +266,7 @@ Apparently makes emacs crash when refreshing the pdf if set to 300.
 (global-prettify-symbols-mode t)
 #+END_SRC
 
-Org bullets
+** Org bullets
 #+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook 'org-bullets-mode)
 #+END_SRC
@@ -393,7 +395,7 @@ Org bullets
                  (set-exec-path-from-shell-PATH)
                  (make-local-variable 'jedi:server-command)
                  (set 'jedi:server-command
-                      (list (executable-find "python") ;; may need help if running from GUI
+                      (list (executable-find "python3") ;; may need help if running from GUI
                             (cadr default-jedi-server-command))))
 
                (defun current-buffer-project-root ()
@@ -421,7 +423,7 @@ Org bullets
 
                (defun jedi-config:set-python-executable ()
                  (set-exec-path-from-shell-PATH)
-                 (make-local-variable 'jedi:sernver-command)
+                 (make-local-variable 'jedi:server-command)
                  (set 'jedi:server-command
                       (list (executable-find "python3") ;; may need help if running from GUI
                             (cadr default-jedi-server-command))))
@@ -550,6 +552,11 @@ to clear them out once you're done working with those folders.
   (global-set-key (kbd "C-ø") 'mark-sexp)
   (global-set-key (kbd "C-å") 'mark-defun)
 #+END_SRC
+** Let troupe use sml-mode
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.trp\\'" . sml-mode))
+#+END_SRC
+
 * Org mode
 
 ** Spell checking
@@ -609,6 +616,7 @@ to clear them out once you're done working with those folders.
   (add-hook 'org-mode-hook (lambda () (auto-revert-mode 1)))
   (add-hook 'org-mode-hook (lambda () (add-to-list 'insert-pair-alist (list ?\$ ?\$))))
   (add-hook 'org-mode-hook (lambda () (add-to-list 'electric-pair-pairs (list ?\$ ?\$))))
+  (add-hook 'org-mode-hook (lambda () (add-to-list 'electric-pair-text-pairs (list ?\$ ?\$))))
 #+END_SRC
 
 ** Better look of latex previews
