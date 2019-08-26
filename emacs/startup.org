@@ -1,7 +1,7 @@
 #+TITLE: Welcome
-[[~/uni/ar/][Augmented reality]] [[~/uni/ar/notes.org][notes]]
-[[~/uni/lbs/][Language-based security]] [[~/uni/lbs/notes.org][notes]]
-[[~/uni/ads/][Advanced Data Structures]] [[~/uni/ads/notes.org][notes]]
+[[~/uni/fp/][Functional Programming]] [[~/uni/fp/notes.org][notes]]
+[[~/uni/tacc/][Theory of Algorithms and Computational Complexity]] [[~/uni/tacc/notes.org][notes]]
+[[~/uni/adma/][Advanced Data Management and Analysis]] [[~/uni/adma/notes.org][notes]]
 [[/ssh:frederik@frederikal.dk#1700:/home/frederik][home server]]
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
 [[~/Nextcloud/Documents][Nextcloud]]

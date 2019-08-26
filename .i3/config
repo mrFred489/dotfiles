@@ -144,7 +144,7 @@ bindsym $mod2+5 workspace $workleft5
 bindsym $mod2+m workspace $music
 bindsym $mod2+s workspace $settings
 bindsym $mod2+v workspace $streams
-bindsym $mod2+c workspace $communicate
+bindsym $mod2+e workspace $communicate
 bindsym $mod+w workspace $emacs
 
 # move focused container to workspace
@@ -164,7 +164,7 @@ bindsym $mod2+Shift+5 move container to workspace $workleft5
 bindsym $mod2+Shift+m move container to workspace $music
 bindsym $mod2+Shift+s move container to workspace $settings
 bindsym $mod2+Shift+v move container to workspace $streams
-bindsym $mod2+Shift+c move container to workspace $communicate
+bindsym $mod2+Shift+e move container to workspace $communicate
 bindsym $mod+Shift+w move container to workspace $emacs
 
 # Dedicate windows to workspaces
@@ -180,6 +180,7 @@ assign [class="net-minecraft-bootstrap-Bootstrap"] $games
 assign [class="Minecraft"] $games
 assign [class="Binding of Isaac"] $games
 assign [class="Kingdom Rush"] $games
+assign [class="factorio"] $games
 # assign [class="RocketLeague"] $games
 assign [class="Gnome-system-monitor"] $settings
 assign [class="Unity-control-center"] $settings

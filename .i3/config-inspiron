@@ -294,7 +294,7 @@ bindsym Pause exec /home/frederik/work/Programming/scripts/break_key.sh
 bindsym $mod+Shift+k exec /home/frederik/work/Programming/scripts/openMySite.sh
 bindsym $mod+ae move workspace to output right
 bindsym $mod+aring move workspace to output up
-bindsym $mod+o exec bash /home/frederik/work/Programming/scripts/toggle_monitor_rotation.sh
+bindsym $mod+o exec "bash /home/frederik/work/Programming/scripts/toggle_monitor_rotation.sh DP-1"
 bindsym Print exec "scrot ~/Pictures/screenshots/%Y-%m-%d\ %H:%M:%S.png"
 bindsym $mod+XF86Search exec "gnome-screenshot -a"
 bindsym $mod+l exec "bash /home/frederik/work/Programming/scripts/lockscreen.sh"
@@ -321,6 +321,7 @@ exec --no-startup-id exec 'bash /home/frederik/work/Programming/scripts/removeSt
 exec --no-startup-id nextcloud
 exec --no-startup-id xss-lock -- ~/work/Programming/scripts/lockscreen.sh
 # exec --no-startup-id exec compton -b
+exec --no-startup-id nm-applet
 
 
 # Set colors of i3
