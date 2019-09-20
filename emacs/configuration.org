@@ -560,8 +560,13 @@ to clear them out once you're done working with those folders.
 ** Set coq variables
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables 
-   '(coq-prog-name "/home/frederik/.opam/system/bin/coqtop")
-   '(coq-compile-before-require t))
+   '(coq-prog-name "/home/frederik/coqdir/coqtop")
+   ) ;; '(coq-compile-before-require t)
+#+END_SRC
+
+** Enable company-coq-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'coq-mode-hook #'company-coq-mode)
 #+END_SRC
 * Org mode
 
@@ -756,11 +761,6 @@ to clear them out once you're done working with those folders.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'prog-mode-hook 'electric-pair-mode)
-#+END_SRC
-
-** Extra undo keybind for american keyboard
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-?") 'undo)
 #+END_SRC
 
 ** Compile command when editing latex
