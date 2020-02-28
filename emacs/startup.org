@@ -1,5 +1,5 @@
 #+TITLE: Welcome
-[[~/uni/thesis/][Thesis]] [[~/uni/thesis/report/][report]] [[~/uni/thesis/adaptive-indexing-thesis/KDTree/][KDTree]] [[~/uni/thesis/notes.org][notes]] [[~/uni/thesis/paper-notes.org][Paper notes]]
+[[~/uni/thesis/][Thesis]] [[~/uni/thesis/adaptive-indexing-thesis/report/][report]] [[~/uni/thesis/adaptive-indexing-thesis/KDTree/][KDTree]] [[~/uni/thesis/notes.org][notes]] [[~/uni/thesis/paper-notes.org][Paper notes]]
 [[/ssh:frederik@frederikal.dk#1700:/home/frederik][home server]]
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
 [[~/Nextcloud/Documents/Min Private/Awesome-CV/examples/][Ansøgninger]]
