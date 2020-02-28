@@ -476,6 +476,20 @@ Encode some characters
               (setq yas-dont-activate t)))
 #+END_SRC
 
+** ANSI colors in compilation buffer
+#+BEGIN_SRC emacs-lisp
+    (defun display-ansi-colors ()
+      (interactive)
+      (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max))))
+	;; (add-hook 'compilation-mode #'display-ansi-colors)
+  (ignore-errors
+    (require 'ansi-color)
+    (defun my-colorize-compilation-buffer ()
+      (when (eq major-mode 'compilation-mode)
+        (ansi-color-apply-on-region compilation-filter-start (point-max))))
+    (add-hook 'compilation-filter-hook 'display-ansi-colors))
+#+END_SRC
 * Working in emacs
 
 ** Setting the ls arguments for dired
@@ -568,12 +582,21 @@ to clear them out once you're done working with those folders.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'coq-mode-hook #'company-coq-mode)
 #+END_SRC
+** Use windmove to move between windows
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x <up>") 'windmove-up)
+  (global-set-key (kbd "C-x <down>") 'windmove-down)
+  (global-set-key (kbd "C-x <left>") 'windmove-left)
+  (global-set-key (kbd "C-x <right>") 'windmove-right)
+#+END_SRC
+
 * Org mode
 
 ** Spell checking
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode-hook 'flyspell-mode)
+  (add-hook 'tex-mode-hook 'flyspell-mode)
   (setq flyspell-sort-corrections nil)
   (setq flyspell-issue-message-flag nil)
   (setq ispell-program-name "/usr/local/bin/aspell")
@@ -703,7 +726,7 @@ to clear them out once you're done working with those folders.
 *** Program analysis and verification
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'org-structure-template-alist
-         '("p" "#+BEGIN_EXPORT latex\n?\n\\vspace{5mm}\n\\centerline{\\DisplayProof}\n\\vspace{5mm}\n#+END_EXPORT"
+         '("p" "#+BEGIN_EXPORT latex\n\\axiom{}\n\\unary{?}\n\\vspace{5mm}\n\\centerline{\\DisplayProof}\n\\vspace{5mm}\n#+END_EXPORT"
            "<literal style=\"latex\">\n?\n</literal>"))
 #+END_SRC
 * Editing settings
@@ -768,6 +791,14 @@ to clear them out once you're done working with those folders.
   (global-set-key "\C-x\C-m" 'compile)
 #+END_SRC
 # (set (make-local-variable 'compile-command) (format "pdflatex -interaction nonstopmode %s" (file-name-nondirectory buffer-file-name)))
+** Encoding bug fix
+#+BEGIN_SRC emacs-lisp
+(defun use-default-process-coding (fun &rest args)
+  (let ;; Replace the value with whatever you have by default.
+       ((default-process-coding-system '(utf-8-unix . utf-8-unix)))
+    (apply fun args)))
+(advice-add 'magit--process-coding-system :around #'use-default-process-coding)
+#+END_SRC
 * Key binds
 
 ** Stuff to be cleaned up

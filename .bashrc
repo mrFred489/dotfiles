@@ -203,6 +203,8 @@ complete -W "$(cat ~/.scriptstuff/livenames.txt)" live
 complete -W "Pervasive Concurrency MatMod SoftArc" d
 
 alias e="bash ~/work/Programming/scripts/openemacs.sh"
+alias kdtree="cdl /home/frederik/uni/thesis/adaptive-indexing-thesis/KDTree"
+
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 # Add bash aliases.
 if [ -f ~/.bash_aliases ]; then

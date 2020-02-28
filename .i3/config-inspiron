@@ -105,6 +105,8 @@ set $music ""
 set $settings ""
 set $emacs ""
 set $communicate ""
+set $current "0:"
+
 
 # switch to workspace
 bindsym $mod+1 workspace $workmain1
@@ -120,6 +122,8 @@ bindsym $mod+s workspace $settings
 bindsym $mod2+m workspace $music
 bindsym $mod+w workspace $emacs
 bindsym $mod+e workspace $communicate
+bindsym $mod+q workspace $current
+
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workmain1
@@ -135,6 +139,7 @@ bindsym $mod2+Shift+m move container to workspace $music
 bindsym $mod2+Shift+s move container to workspace $settings
 bindsym $mod+Shift+w move container to workspace $emacs
 bindsym $mod+Shift+e move container to workspace $communicate
+bindsym $mod2+Shift+q move container to workspace $current
 
 # Dedicate windows to workspaces
 # Use xprop to get information	
@@ -231,7 +236,8 @@ mode "open" {
     bindsym t exec --no-startup-id "thunar"; mode "default"
     bindsym q exec --no-startup-id "gnome-calculator"; mode "default"
 	bindsym w exec --no-startup-id "gedit"; mode "default"
-	bindsym m exec --no-startup-id i3-msg 'exec --no-startup-id spotify'; mode "default"
+	# bindsym m exec --no-startup-id "bash /home/frederik/work/Programming/scripts/openspotify.sh"; mode "default"
+	bindsym m exec --no-startup-id "bash /home/frederik/work/Programming/scripts/smartopen.sh spotify spotify 'i3-msg workspace '"; mode "default"
     bindsym r exec --no-startup-id "rhythmbox"; mode "default"
     bindsym l exec --no-startup-id "evince"; mode "default"
     bindsym c exec --no-startup-id "bash /home/frederik/work/Programming/scripts/openemacs.sh"; mode "default"
@@ -239,6 +245,7 @@ mode "open" {
     bindsym e mode "execute"
     bindsym p mode "$mode_display"
     bindsym k mode "$mode_system"
+    bindsym o mode "mouse"
 
 
     # back to normal: Enter or Escape
@@ -257,6 +264,30 @@ mode "execute" {
     
 
 bindsym $mod+z mode "open"
+
+
+mode "mouse" {
+    bindsym space exec "xdotool mousedown 1"
+    bindsym --release space exec "xdotool mouseup 1"
+    bindsym Left exec "xdotool mousemove_relative -- -5 0"
+    bindsym Shift+Left exec "xdotool mousemove_relative -- -50 0"
+    bindsym Ctrl+Left exec "xdotool mousemove_relative -- -1 0"
+    bindsym Right exec "xdotool mousemove_relative -- 5 0"
+    bindsym Shift+Right exec "xdotool mousemove_relative -- 50 0"
+    bindsym Ctrl+Right exec "xdotool mousemove_relative -- 1 0"
+    bindsym Up exec "xdotool mousemove_relative -- 0 -5"
+    bindsym Shift+Up exec "xdotool mousemove_relative -- 0 -50"
+    bindsym Ctrl+Up exec "xdotool mousemove_relative -- 0 -1"
+    bindsym Down exec "xdotool mousemove_relative -- 0 5"
+    bindsym Shift+Down exec "xdotool mousemove_relative -- 0 50"
+    bindsym Ctrl+Down exec "xdotool mousemove_relative -- 0 1"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+    
+
+
 
 mode "emoji" {
      bindsym 7 exec "bash /home/frederik/work/Programming/scripts/insertToClipboard.sh 😊"; mode "default"
@@ -299,7 +330,7 @@ bindsym Print exec "scrot ~/Pictures/screenshots/%Y-%m-%d\ %H:%M:%S.png"
 bindsym $mod+XF86Search exec "gnome-screenshot -a"
 bindsym $mod+l exec "bash /home/frederik/work/Programming/scripts/lockscreen.sh"
 bindsym $mod+y fullscreen disable; floating enable; resize set 633 408
-bindsym $mod+$mod2+Return exec xfce4-terminal -e 'ssh -p 1700 frederik@fredstesting.dk'
+bindsym $mod+$mod2+Return exec xfce4-terminal -e 'ssh -p 1700 frederik@frederikal.dk'
 bindsym $mod+i exec ~/.emacs_anywhere/bin/run # && i3-msg "[id=$(xdotool getactivewindow)] floating enable"
 
 
@@ -322,6 +353,7 @@ exec --no-startup-id nextcloud
 exec --no-startup-id xss-lock -- ~/work/Programming/scripts/lockscreen.sh
 # exec --no-startup-id exec compton -b
 exec --no-startup-id nm-applet
+exec --no-startup-id setxkbmap -option ctrl:nocaps
 
 
 # Set colors of i3

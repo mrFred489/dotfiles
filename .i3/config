@@ -252,7 +252,7 @@ mode "open" {
 	bindsym d exec "inkscape"; mode "default"
     bindsym g mode "game"
     bindsym e mode "execute"
-
+    bindsym o mode "mouse"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -280,6 +280,27 @@ mode "game" {
 
 bindsym $mod+z mode "open"
 
+mode "mouse" {
+    bindsym space exec "xdotool mousedown 1"
+    bindsym --release space exec "xdotool mouseup 1"
+    bindsym Left exec "xdotool mousemove_relative -- -5 0"
+    bindsym Shift+Left exec "xdotool mousemove_relative -- -50 0"
+    bindsym Ctrl+Left exec "xdotool mousemove_relative -- -1 0"
+    bindsym Right exec "xdotool mousemove_relative -- 5 0"
+    bindsym Shift+Right exec "xdotool mousemove_relative -- 50 0"
+    bindsym Ctrl+Right exec "xdotool mousemove_relative -- 1 0"
+    bindsym Up exec "xdotool mousemove_relative -- 0 -5"
+    bindsym Shift+Up exec "xdotool mousemove_relative -- 0 -50"
+    bindsym Ctrl+Up exec "xdotool mousemove_relative -- 0 -1"
+    bindsym Down exec "xdotool mousemove_relative -- 0 5"
+    bindsym Shift+Down exec "xdotool mousemove_relative -- 0 50"
+    bindsym Ctrl+Down exec "xdotool mousemove_relative -- 0 1"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+    
 mode "emoji" {
      bindsym 7 exec "bash /home/frederik/work/Programming/scripts/insertToClipboard.sh 😊"; mode "default"
      bindsym d exec "bash /home/frederik/work/Programming/scripts/insertToClipboard.sh 😄"; mode "default"
@@ -347,6 +368,7 @@ exec i3-msg "exec redshift -l 56.2639:9.5018"
 exec --no-startup-id i3-msg "exec thunderbird"
 exec --no-startup-id i3-msg "exec signal-desktop"
 exec --no-startup-id i3-msg exec 'bash /home/frederik/work/Programming/scripts/removeStartupNotifications.sh'
+exec --no-startup-id setxkbmap -option ctrl:nocaps
 exec --no-startup-id nextcloud
 exec --no-startup-id exec workrave
 exec --no-startup-id exec compton -b

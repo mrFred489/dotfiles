@@ -1,11 +1,26 @@
 #+TITLE: Welcome
-[[~/uni/fp/][Functional Programming]] [[~/uni/fp/notes.org][notes]]
-[[~/uni/tacc/][Theory of Algorithms and Computational Complexity]] [[~/uni/tacc/notes.org][notes]]
-[[~/uni/adma/][Advanced Data Management and Analysis]] [[~/uni/adma/notes.org][notes]]
+[[~/uni/thesis/][Thesis]] [[~/uni/thesis/report/][report]] [[~/uni/thesis/adaptive-indexing-thesis/KDTree/][KDTree]] [[~/uni/thesis/notes.org][notes]] [[~/uni/thesis/paper-notes.org][Paper notes]]
 [[/ssh:frederik@frederikal.dk#1700:/home/frederik][home server]]
 [[~/Nextcloud/Documents/dotfiles/][Dotfiles]]
+[[~/Nextcloud/Documents/Min Private/Awesome-CV/examples/][Ansøgninger]]
 [[~/Nextcloud/Documents][Nextcloud]]
 [[~/Nextcloud/Documents/Programming/kattis][kattis]]
 [[~/Nextcloud/Documents/Programming/learnHaskell][haskell]]
 [[~/Nextcloud/Documents/Programming/learnRust][rust]]
-[[~/Nextcloud/Documents/Programming/adventOfCode/2018][AdventOfCode]]
+[[~/Nextcloud/Documents/Programming/adventOfCode/2019][AdventOfCode]]
+[[~/Documents/frederikal/][frederikal]]
+[[~/work/Min Private/coffee.org][coffee]]
+
+Jobs:
+Bankdata: https://www.bankdata.dk/en/jobs/jobs
+Arosii
+Vertica: https://www.vertica.dk/om-os/job/uopfordret-ansoegning/
+CCI Europe: https://www.ccieurope.com/about/2018-10-23/Careers-at-CCI-1082.html
+Interacoustics: https://www.interacoustics.com/company/jobs
+TDC: https://tdc.csod.com/ats/careersite/jobdetails.aspx?site=2&c=tdc&id=3898
+Visiolink: https://www.visiolink.com/careers
+Concordium
+Lego
+
+
+https://www.prosa.dk/raad-og-svar/loenstatistik/virksomhedsindeks/vest/
